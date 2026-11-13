@@ -131,7 +131,7 @@ nav{
     mask-image: linear-gradient(to bottom, #000000 50%, transparent 100%);
 }
 
-.header-slider a{
+.header-slider button{
     position: absolute;
     top: 40%;
     z-index: 1;
@@ -142,6 +142,12 @@ nav{
     font-weight: 600;
     font-size: 18px;
     cursor: pointer;
+    border: 0;
+}
+
+.header-slider button:focus-visible {
+    outline: 3px solid #ff9900;
+    outline-offset: 2px;
 }
 
 .control_next{
@@ -265,4 +271,103 @@ footer{
     color: #fff;
     background-color: #131921;
     padding: 20px 60px;
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 900px) {
+    nav {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .nav-search {
+        order: 10;
+        flex-basis: 100%;
+        margin: 4px 0 0;
+    }
+
+    .nav-bottom {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .header-box {
+        margin-top: -12vw;
+    }
+
+    .box-row {
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+
+    .box-col {
+        flex: 1 1 calc(50% - 12px);
+        max-width: none;
+    }
+}
+
+@media (max-width: 600px) {
+    nav {
+        justify-content: flex-start;
+    }
+
+    .nav-country,
+    .nav-language {
+        display: none;
+    }
+
+    .nav-text {
+        margin-left: 6px;
+    }
+
+    .nav-bottom {
+        gap: 14px;
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    .header-slider button {
+        top: 28%;
+        padding: 20px 10px;
+        font-size: 16px;
+    }
+
+    .header-box {
+        margin-top: -6vw;
+    }
+
+    .box-row {
+        gap: 12px;
+        margin: 12px;
+    }
+
+    .box-col {
+        min-width: calc(50% - 6px);
+        padding: 12px;
+    }
+
+    .box-col img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .products-slider,
+    .products-slider-with-price {
+        margin: 0 12px 12px;
+        padding: 14px;
+    }
+
+    footer {
+        flex-direction: column;
+        gap: 12px;
+        padding: 20px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 380px) {
+    .box-col {
+        min-width: 100%;
+    }
 }
