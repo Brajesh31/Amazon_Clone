@@ -1,17 +1,37 @@
 # Troubleshooting
 
-## Local images are missing
+## Page opens without styles
 
-Run the server from the repository root and verify that the `imgs/` directory exists with the filenames referenced in `index.html`. Relative paths are case-sensitive on many hosts.
+Confirm the server is running from the repository root and that `amazone.css` is present. The HTML references it as `./amazone.css`.
 
-## The carousel does not move
+## Carousel controls do not work
 
-Check the browser console and confirm that `.header-slider ul img`, `.control_prev`, and `.control_next` exist. The current script expects at least one hero image.
+Confirm `amazone.js` loads and inspect the browser console. Verify the page contains `.header-slider ul img`, `.control_prev`, and `.control_next`. The script safely handles an empty carousel or missing controls, but no slides means there is nothing to display.
 
-## Remote images or icons do not load
+## Product/category images are broken
 
-Check network connectivity, HTTPS access, CDN availability, and browser extensions. Remote assets may be blocked by policy or changed by their providers.
+The HTML references the `imgs/` directory, which is absent from the tracked repository. Review [Asset inventory](ASSET-INVENTORY.md). Add only assets you have permission to use, preserving the expected relative paths, or update the markup to reference approved alternatives.
 
-## Product rails do not scroll
+## Remote hero images or icons fail
 
-Use the mouse wheel over a `.products` region. The script prevents the default wheel behavior for those regions and translates vertical wheel movement to horizontal scrolling.
+Check network access, HTTPS, browser extensions, content blockers, and third-party host availability. Remote providers may remove or change files without notice.
+
+## Horizontal product rails do not move
+
+Use the vertical mouse wheel over a product rail. A vertical wheel gesture is translated into horizontal movement when the rail can move. Native horizontal wheel input remains available. At either end, normal page scrolling is not blocked.
+
+## Site works locally but fails after deployment
+
+Serve the repository root as the document root and check the deployment base path. Paths beginning with `./` or `imgs/` are relative to the current document location. Hosting under a nested route may require a matching base path.
+
+## Tests fail
+
+Use Node.js 20 or newer and run:
+
+```bash
+node --check amazone.js
+node --test tests/*.test.js
+python scripts/check_html.py
+```
+
+The Python HTML checker may report missing image paths as warnings. Those warnings reflect known absent files, not a test harness failure.

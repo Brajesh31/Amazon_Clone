@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazon.com. Spent less. Smile more.</title>
+    <title>Amazon-inspired Storefront Prototype</title>
     <link rel="stylesheet" href="./amazone.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <nav>
+    <nav aria-label="Main navigation">
         <a href="/">
             <img src="https://static.vecteezy.com/system/resources/previews/019/017/542/original/amazon-logo-free-png.png"
                 width="100" alt="">
@@ -29,7 +29,7 @@
                 <p>All</p>
                 <img src="https://cdn1.iconfinder.com/data/icons/basic-mobile-ios-android/24/Dropdown-Down-512.png" height="19" alt="">
             </div>
-            <input type="text" class="nav-search-input" placeholder="Search Amazon">
+            <input type="search" class="nav-search-input" placeholder="Search products (demo only)" aria-label="Search products, demonstration only">
             <img src="https://www.freeiconspng.com/uploads/search-icon-png-8.png" height="30" class="nav-search-icon" alt="">
         </div>
         <div class="nav-language">
@@ -63,9 +63,9 @@
         <p>Sell</p>
     </div>
 
-    <div class="header-slider">
-        <a href="#" class="control_prev">&#129144</a>
-        <a href="#" class="control_next">&#129146</a>
+    <div class="header-slider" aria-label="Promotional image carousel">
+        <a href="#" class="control_prev" role="button" aria-label="Previous promotional image">&#129144</a>
+        <a href="#" class="control_next" role="button" aria-label="Next promotional image">&#129146</a>
         <ul>
             <img src="https://m.media-amazon.com/images/I/71VcGrxQRBL._SX3000_.jpg" class="header-img" alt="">
             <img src="https://m.media-amazon.com/images/I/71Ie3JXGfVL._SX3000_.jpg" class="header-img" alt="">
@@ -319,7 +319,7 @@
     <footer>
         <img src="https://static.vecteezy.com/system/resources/previews/019/017/542/original/amazon-logo-free-png.png"
                 width="100" alt="">
-        <p>© 1996-2025, Amazon.com, Inc. or its affiliates</p>
+        <p>Educational storefront prototype. Not affiliated with Amazon.</p>
     </footer>
 
     <script src="./amazone.js"></script>

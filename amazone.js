@@ -1,39 +1,75 @@
-const imgs = document.querySelectorAll(".header-slider ul img");
-const prev_btn = document.querySelector(".control_prev");
-const next_btn = document.querySelector(".control_next");
+/* Interactive behaviours for the static storefront prototype. */
+(() => {
+    const slides = Array.from(
+        document.querySelectorAll(".header-slider ul img")
+    );
+    const previousButton = document.querySelector(".control_prev");
+    const nextButton = document.querySelector(".control_next");
+    const productRails = Array.from(document.querySelectorAll(".products"));
 
-let n = 0;
+    let activeSlide = 0;
 
-function changeSlide(){
-    for (let i = 0; i < imgs.length; i++){
-        imgs[i].style.display = 'none ';
+    function showSlide(requestedIndex) {
+        if (slides.length === 0) {
+            return;
+        }
+
+        activeSlide = (requestedIndex + slides.length) % slides.length;
+
+        slides.forEach((slide, index) => {
+            const isActive = index === activeSlide;
+            slide.style.display = isActive ? "block" : "none";
+
+            if (typeof slide.setAttribute === "function") {
+                slide.setAttribute("aria-hidden", String(!isActive));
+            }
+        });
     }
-    imgs[n].style.display = 'block';
-}
-changeSlide();
 
-prev_btn.addEventListener('click', (e)=>{
-    if(n > 0){
-        n--;
-    }else{
-        n = imgs.length - 1;
-    }
-    changeSlide();
-})
+    function bindCarouselControl(control, direction) {
+        if (!control || typeof control.addEventListener !== "function") {
+            return;
+        }
 
-next_btn.addEventListener('click', (e)=>{
-    if(n < imgs.length - 1){
-        n++;
-    }else{
-        n = 0;
-    }
-    changeSlide();
-})
+        control.addEventListener("click", (event) => {
+            if (event && typeof event.preventDefault === "function") {
+                event.preventDefault();
+            }
 
-const scrollContainer = document.querySelectorAll(".products");
-    for(const item of scrollContainer){
-        item.addEventListener('wheel', (evt)=>{
-            evt.preventDefault();
-            item.scrollLeft += evt.deltaY;
-        })
+            showSlide(activeSlide + direction);
+        });
     }
+
+    if (slides.length > 0) {
+        showSlide(0);
+    }
+
+    bindCarouselControl(previousButton, -1);
+    bindCarouselControl(nextButton, 1);
+
+    productRails.forEach((rail) => {
+        rail.addEventListener(
+            "wheel",
+            (event) => {
+                if (!event || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) {
+                    return;
+                }
+
+                const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
+                const nextScrollLeft = Math.min(
+                    maxScroll,
+                    Math.max(0, rail.scrollLeft + event.deltaY)
+                );
+
+                // At either end, allow the page itself to keep scrolling.
+                if (nextScrollLeft === rail.scrollLeft) {
+                    return;
+                }
+
+                event.preventDefault();
+                rail.scrollLeft = nextScrollLeft;
+            },
+            { passive: false }
+        );
+    });
+})();

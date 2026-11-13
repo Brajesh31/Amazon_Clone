@@ -1,17 +1,25 @@
-# FAQ
+# Frequently Asked Questions
 
-## Is this an Amazon product?
+## Is this an official Amazon website?
 
-No. It is an independent educational interface inspired by common ecommerce layouts and is not affiliated with Amazon.
+No. This is an independent educational storefront prototype inspired by common marketplace layouts. It is not affiliated with or endorsed by Amazon.
 
-## Does it support shopping or checkout?
+## Can visitors buy products?
 
-No. The cart, account, search, and shopping links are visual placeholders.
+No. The product cards, search field, account labels, cart, and links are visual placeholders. There is no checkout or payment processing.
+
+## Why are some product images missing?
+
+The HTML references files under `imgs/`, but that directory is not present in the tracked repository. The exact missing paths are listed in [Asset inventory](ASSET-INVENTORY.md).
 
 ## Why is there no package.json?
 
-The project uses browser-native HTML, CSS, and JavaScript and currently has no build dependencies.
+The project uses browser-native HTML, CSS, and JavaScript. It has no frontend build step or npm runtime dependencies. Node.js is used only for dependency-free tests.
 
-## Can I use the images commercially?
+## Does the project use an API or database?
 
-Check the license and terms for every local and remote asset before redistribution. Replace assets with properly licensed alternatives when necessary.
+No. Product content is hard-coded and the project does not call an application API or persist user data.
+
+## Can I reuse the images and logos?
+
+Check the licence and terms of each asset independently. The fact that an image URL is publicly accessible does not grant permission to redistribute it. Replace assets with files that have a clear licence or permission.

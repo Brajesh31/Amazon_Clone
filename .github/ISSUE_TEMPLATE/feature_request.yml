@@ -1,5 +1,5 @@
 name: Feature request
-description: Suggest an improvement to the static storefront.
+description: Suggest an improvement to the static storefront prototype.
 title: "[Feature]: "
 labels: ["enhancement"]
 body:
@@ -10,7 +10,7 @@ body:
     validations:
       required: true
   - type: textarea
-    id: solution
+    id: proposal
     attributes:
       label: Proposed solution
     validations:
@@ -19,3 +19,4 @@ body:
     id: scope
     attributes:
       label: Scope and limitations
+      description: Explain whether this remains frontend-only or requires a backend.

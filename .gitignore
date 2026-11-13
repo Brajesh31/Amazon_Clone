@@ -5,6 +5,7 @@ Desktop.ini
 
 # Editor metadata
 .vscode/
+.idea/
 *.swp
 
 # Local environment files
@@ -12,8 +13,12 @@ Desktop.ini
 .env.*
 !.env.example
 
-# Local development output
+# Development and test output
 *.log
 coverage/
+.nyc_output/
 dist/
 build/
+__pycache__/
+*.py[cod]
+.pytest_cache/

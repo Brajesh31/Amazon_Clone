@@ -1,16 +1,25 @@
 ## Summary
 Describe the change and its user-visible effect.
 
+## Change type
+- [ ] Bug fix
+- [ ] Frontend improvement
+- [ ] Documentation
+- [ ] Tests or CI
+- [ ] Asset update
+- [ ] Maintenance
+
 ## Validation
+- [ ] `node --check amazone.js`
+- [ ] `node --test tests/*.test.js`
+- [ ] `python scripts/check_html.py`
 - [ ] Served the project from its repository root
-- [ ] Tested carousel controls
-- [ ] Tested horizontal product rails
+- [ ] Tested the carousel and product rails
 - [ ] Checked narrow and wide viewport layouts
 - [ ] Checked keyboard focus and console errors
-- [ ] Confirmed new assets are licensed for use
 
-## Screenshots
-Include screenshots for visual changes.
+## Assets and external resources
+List new image/font/icon URLs, their licence or permission, and any privacy implications.
 
-## Additional notes
-List any new external URLs, assets, or limitations.
+## Limitations
+Document unresolved issues, including any remaining missing image references.
