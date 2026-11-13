@@ -1,0 +1,25 @@
+name: Bug report
+description: Report a reproducible issue with the static storefront.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: What is broken?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshot or sanitized console output

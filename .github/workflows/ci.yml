@@ -1,0 +1,24 @@
+name: Static site checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify required entry files
+        run: |
+          test -f index.html
+          test -f amazone.css
+          test -f amazone.js
+      - name: Validate JavaScript syntax
+        run: node --check amazone.js

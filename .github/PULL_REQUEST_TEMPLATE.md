@@ -1,15 +1,16 @@
 ## Summary
-
 Describe the change and its user-visible effect.
 
 ## Validation
-
 - [ ] Served the project from its repository root
 - [ ] Tested carousel controls
-- [ ] Tested product-rail scrolling
-- [ ] Checked responsive and keyboard behavior
-- [ ] Confirmed no secrets or unlicensed assets were added
+- [ ] Tested horizontal product rails
+- [ ] Checked narrow and wide viewport layouts
+- [ ] Checked keyboard focus and console errors
+- [ ] Confirmed new assets are licensed for use
 
 ## Screenshots
+Include screenshots for visual changes.
 
-Include before/after screenshots for visual changes.
+## Additional notes
+List any new external URLs, assets, or limitations.

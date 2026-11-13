@@ -1,52 +1,64 @@
 # Amazon Clone
 
-A static Amazon-inspired storefront interface built with plain HTML, CSS, and JavaScript. The project demonstrates a responsive marketplace layout with a navigation bar, search presentation, hero carousel, product category cards, horizontal product rails, and simple wheel-based scrolling.
+A static Amazon-inspired storefront interface built with plain HTML, CSS, and JavaScript. It demonstrates a marketplace-style navigation bar, hero carousel, category cards, product rails, promotional labels, and horizontal scrolling.
 
-> This is an educational frontend prototype. It is not affiliated with Amazon and does not implement authentication, checkout, product APIs, payments, or order management.
+> This is an educational frontend prototype. It is not affiliated with Amazon. It does not implement authentication, live product search, cart persistence, checkout, payment processing, or order management.
 
 ## Features
+- Marketplace-style primary and secondary navigation.
+- Hero banner carousel with previous and next controls.
+- Static category and product sections.
+- Horizontal product rails with wheel-based scrolling.
+- Responsive styling in `amazone.css`.
 
-- Amazon-style primary and secondary navigation.
-- Hero banner carousel controlled by previous and next buttons.
-- Category cards and horizontal product sections.
-- Static product cards with promotional labels and prices.
-- Wheel-to-horizontal-scroll behavior for product rails.
-- Responsive layout rules in [`amazone.css`](./amazone.css).
+## Technology
+- HTML5
+- CSS3
+- Vanilla JavaScript
+- Font Awesome stylesheet loaded from a CDN
+- Remote image assets and local image paths referenced by the page
 
-## Project structure
-
+## Project files
 ```text
 .
-├── index.html       # Page markup and product content
-├── amazone.css      # Layout, colors, typography, and responsive styling
-├── amazone.js       # Carousel and product-rail interactions
-└── imgs/            # Expected local product images referenced by index.html
+├── index.html
+├── amazone.css
+├── amazone.js
+├── docs/
+└── .github/
 ```
 
 ## Run locally
-
-No build step or package installation is required. Serve the directory from its root so relative image paths resolve:
+No package installation or build step is required. Serve the repository root:
 
 ```bash
 python -m http.server 8000
 ```
 
-Open <http://localhost:8000/> in a browser. A local web server is preferred over opening `index.html` directly because browser file-security rules can affect asset loading.
+Open <http://localhost:8000/>.
+
+## Important asset note
+The current tracked repository tree does not contain an `imgs/` directory, while `index.html` references multiple files under `imgs/`. Those product and category images will not load until the intended assets are added. The hero images and several icons are remote URLs and depend on third-party availability. Do not add copyrighted or unlicensed assets.
 
 ## Current limitations
-
 - Product data and prices are hard-coded in `index.html`.
-- The search field, account links, cart, and navigation links are visual only.
-- The carousel depends on JavaScript and assumes the expected image elements exist.
-- Some images and icons are loaded from third-party CDNs; local `imgs/` assets must be present for the product sections.
-- There is no persistence, API, authentication, payment processing, or server-side validation.
+- Search, account, cart, and category links are visual only.
+- No backend, API, database, authentication, checkout, or persistence exists.
+- The carousel expects its hero image and control elements to be present.
+- Remote image and icon providers can change or block assets.
 
-## Contributing
+## Documentation
+- [Installation](docs/installation.md)
+- [Architecture](docs/architecture.md)
+- [Development](docs/development.md)
+- [API status](docs/api.md)
+- [Database status](docs/database.md)
+- [Deployment](docs/deployment.md)
+- [Troubleshooting](docs/troubleshooting.md)
+- [Quality checks](docs/QA.md)
 
-See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the review and change process. For design or accessibility changes, include screenshots and test the page at narrow and wide viewport sizes.
+## Contributing and security
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting changes. Report security concerns privately as described in [SECURITY.md](SECURITY.md).
 
 ## License
-
-Released under the MIT License. See [`LICENSE`](./LICENSE).
-
-Last updated: 2026-11-13 11:55 UTC
+MIT. See [LICENSE](LICENSE).
