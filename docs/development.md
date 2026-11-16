@@ -1,33 +1,44 @@
-# Development Guide
+# 🧑‍💻 Development Guide
 
-## Prerequisites
+## 1. Development philosophy
 
-- A modern browser with JavaScript enabled.
-- Python 3 for a simple static HTTP server.
-- Node.js 20 or newer for the built-in test runner.
-- Git for source control.
+Keep the current project understandable and lightweight. It is a static HTML/CSS/vanilla-JavaScript storefront prototype. Add complexity only when a real requirement justifies it, and update tests and documentation alongside implementation.
 
-There is no `package.json`, bundler, transpiler, runtime dependency installation, or build output in the current project.
+## 2. Prerequisites
 
-## Start a local server
+| Tool | Version / expectation | Reason |
+|---|---|---|
+| Browser | Modern evergreen browser | Render and manually test |
+| Python | Python 3 | Static server and HTML checker |
+| Node.js | 20 or newer | Built-in test runner and syntax validation |
+| Git | Current supported release | Version control |
 
-Run from the repository root:
+There is no `package.json`, bundler, transpiler, frontend framework, or runtime dependency installation in the current repository.
+
+## 3. Clone and serve
 
 ```bash
+git clone https://github.com/Brajesh31/Amazon_Clone.git
+cd Amazon_Clone
 python -m http.server 8000
 ```
 
-Visit <http://localhost:8000/>. Do not open `index.html` with a `file://` URL when testing relative assets.
+Open `http://localhost:8000/`.
 
-## Source files
+Run the server from the repository root. Relative references such as `./amazone.css`, `./amazone.js`, and `imgs/...` are resolved against the page URL. Opening the file directly with `file://` is not an equivalent deployment test.
 
-- `index.html`: static content and image paths.
-- `amazone.css`: visual styles and breakpoints.
-- `amazone.js`: browser interactions.
-- `tests/amazone.test.js`: JavaScript unit tests.
-- `scripts/check_html.py`: structural and local-reference checker.
+## 4. Source map
 
-## Run checks
+| File | Responsibility | Change considerations |
+|---|---|---|
+| `index.html` | Static page content and controls | Preserve semantic structure and align classes with JS/CSS |
+| `amazone.css` | Layout, typography, colours, responsive rules | Test multiple widths and zoom |
+| `amazone.js` | Carousel and product rail interactions | Guard optional DOM elements and cover behaviour with tests |
+| `tests/amazone.test.js` | Mock-DOM behaviour tests | Extend assertions when interaction changes |
+| `scripts/check_html.py` | HTML structure and local path checks | Keep warnings and failures meaningful |
+| `docs/` | Project technical and operational knowledge | Update when implementation changes |
+
+## 5. Standard validation
 
 ```bash
 node --check amazone.js
@@ -35,18 +46,49 @@ node --test tests/*.test.js
 python scripts/check_html.py
 ```
 
-The HTML checker reports unresolved local image paths as warnings because the current repository does not include the referenced `imgs/` directory. Do not mistake those warnings for repaired assets.
+The checker reports unresolved local image paths as warnings because the repository currently lacks the referenced `imgs/` directory. Do not suppress these warnings without resolving or documenting the underlying issue.
 
-## Editing guidance
+## 6. JavaScript development practices
 
-- Keep JavaScript selectors aligned with the classes in the HTML.
-- Use semantic controls and keyboard-operable interactions for new functionality.
-- Keep external asset URLs intentional and document their providers and licensing status.
-- Do not add a frontend framework or build system unless there is a concrete requirement.
-- Do not add pretend checkout, authentication, search, or cart behaviour.
-- Avoid copying Amazon production content, imagery, or logos unless usage rights permit it.
-- Check browser console errors and test both narrow and wide viewports after visual changes.
+- Keep the script compatible with browser-native JavaScript.
+- Avoid adding dependencies for simple DOM interactions.
+- Query only the elements needed by the behaviour.
+- Guard optional controls and empty collections.
+- Use event options deliberately, especially when calling `preventDefault`.
+- Keep state local when it has no need to survive a page reload.
+- Avoid unsafe HTML injection when handling future user input.
+- Keep selectors stable and update tests when markup changes.
 
-## Content and product data
+## 7. HTML and CSS practices
 
-The catalog is currently authored directly in HTML. If the project grows, consider extracting product card content into a small local JavaScript data structure before introducing a backend.
+- Prefer semantic landmarks and controls.
+- Use buttons for actions and anchors for real destinations.
+- Keep accessible names and visible focus styles.
+- Keep responsive rules grouped by meaningful breakpoints.
+- Avoid inline styles when a reusable stylesheet rule is clearer.
+- Preserve image aspect ratio and prevent unexpected layout shifts.
+- Use alternative text based on the actual image content, not guessed filenames.
+
+## 8. Test development
+
+The existing test suite uses Node.js built-in modules and a small mock DOM. It tests logic but does not provide browser layout fidelity. Add tests for new edge cases, including missing elements, empty data, boundaries, and independent instances.
+
+Manual browser testing remains necessary for layout, real wheel input, keyboard focus, network failures, and accessibility.
+
+## 9. Asset development
+
+The local image directory is currently absent. Before adding assets, confirm redistribution rights, source, file path, alternative text, and visual fit. Update [Asset Inventory](ASSET-INVENTORY.md) and run the local-reference checker.
+
+## 10. Documentation expectations
+
+Update the relevant feature, workflow, architecture, QA, accessibility, security, and limitation documents when behaviour changes. See [Documentation Maintenance](documentation-maintenance.md).
+
+## 11. Avoid unnecessary scope expansion
+
+Do not add:
+- A backend or database without a product requirement.
+- Fake login or checkout flows.
+- Unused packages or build tools.
+- Credentials or secret values.
+- Third-party images without permission.
+- Long generic documentation that is not grounded in this implementation.
