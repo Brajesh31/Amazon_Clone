@@ -1,3 +1,5 @@
+# Keep GitHub Actions dependencies under review.
+# The project currently has no npm, pip, or other application package manifest.
 version: 2
 updates:
   - package-ecosystem: github-actions
@@ -5,3 +7,6 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - automation
