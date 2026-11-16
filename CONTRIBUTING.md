@@ -74,6 +74,7 @@ Run the checks from the repository root:
 node --check amazone.js
 node --test tests/*.test.js
 python scripts/check_html.py
+python scripts/check_docs.py
 ```
 
 Then manually:
