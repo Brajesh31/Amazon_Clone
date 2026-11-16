@@ -1,12 +1,12 @@
 # 🔀 Data Flow and Browser State
 
-## 1. Current data architecture
+## 1. Purpose
 
-The current project is a static frontend. It has no application API, database, product service, user session, authentication provider, or persistent storage layer.
+This document records what information is present in the current storefront, where it originates, how browser interactions transform it, and what is deliberately not persisted.
 
-Most content is literal markup in `index.html`. Browser state is limited to the active carousel slide index and the native scroll position of each product rail.
+The current application is a static frontend. It has no application API, database, product service, user session, authentication provider, or persistent storage layer.
 
-## 2. Context diagram
+## 2. System context
 
 ```mermaid
 flowchart LR
@@ -14,65 +14,101 @@ flowchart LR
     Browser --> HTML[index.html]
     Browser --> CSS[amazone.css]
     Browser --> JS[amazone.js]
-    Browser --> Remote[Third-party image, font and icon hosts]
-    Browser --> Local[Relative imgs paths]
-    Local -. absent from tracked tree .-> Missing[Unresolved image requests]
+    Browser --> External[Third-party image, font and icon hosts]
+    HTML --> Local[Relative imgs paths]
+    Local -. files missing from repository .-> Broken[Unresolved local image requests]
 ```
 
-## 3. UI data flow
+## 3. Current data inventory
 
-| Data or state | Source | Consumer | Persistence |
+| Information | Source | Consumer | Persistence |
 |---|---|---|---|
-| Navigation labels | HTML text | Browser DOM | None |
-| Category labels | HTML text | Category cards | None |
-| Product names/prices | HTML text | Product cards | None |
-| Hero image URLs | HTML attributes | Browser image loader | None |
-| Active slide index | Local JS variable | Carousel function | Memory only |
-| Rail scroll position | Browser element state | CSS overflow and wheel handler | Browser element only |
+| Navigation labels | Literal HTML text | Browser DOM | Repository only |
+| Category headings | Literal HTML text | Category cards | Repository only |
+| Product descriptions | Literal HTML text | Product cards | Repository only |
+| Displayed prices and discounts | Literal HTML text | Deal cards | Repository only |
+| Hero image URLs | HTML `src` attributes | Browser image loader | No application persistence |
+| Active slide index | Local JavaScript variable | Carousel function | Page memory only |
+| Product rail position | DOM element `scrollLeft` | Browser layout/scrolling | Element runtime only |
 | Viewport width | Browser viewport | CSS media queries | Browser environment |
-| Fonts/icons | External URLs | Browser resource loader | Browser cache may apply |
+| Font/icon resources | External URLs | Browser renderer | Browser cache may apply |
 
-## 4. Interaction sequence
+## 4. Page-load sequence
 
 ```mermaid
 sequenceDiagram
-    participant U as Visitor
-    participant D as DOM
+    participant V as Visitor
+    participant B as Browser
+    participant H as index.html
+    participant C as CSS
     participant J as amazone.js
-    participant B as Browser layout engine
+    participant X as External hosts
 
-    U->>D: Open page
-    D->>J: Load script
-    J->>D: Query slides, controls and rails
-    J->>D: Select first slide
-    J->>D: Attach event handlers
-    U->>D: Click next button
-    D->>J: Dispatch click
-    J->>D: Update slide display and aria-hidden
-    D->>B: Recalculate layout
-    U->>D: Wheel over product rail
-    D->>J: Dispatch wheel event
-    J->>D: Update scrollLeft when movement is possible
+    V->>B: Navigate to storefront
+    B->>H: Request document
+    H-->>B: Return markup
+    B->>C: Request stylesheet
+    C-->>B: Return styles
+    B->>X: Request remote visual resources
+    X-->>B: Return available resources
+    B->>J: Load browser script
+    J->>B: Query slides, controls and rails
+    J->>B: Select first slide and bind handlers
+    B-->>V: Render page and available interactions
 ```
 
-## 5. Inputs, transformations, and outputs
+Local images are resolved relative to the document URL. Missing paths result in failed resource requests and broken image presentation.
 
-### Carousel
+## 5. Carousel data flow
 
-- **Input:** A click event and a direction of -1 or +1.
-- **Transformation:** Add direction to active index and wrap it to the slide count.
-- **Output:** One visible image, with other slides hidden and their `aria-hidden` state updated.
+**Input:** a click event on the previous or next button.
 
-### Product rail
+**State:** `activeSlide`, a local integer index.
 
-- **Input:** A wheel event with `deltaX` and `deltaY`.
-- **Transformation:** Compare movement axes, clamp the candidate scroll position to [0, maximum scroll].
-- **Output:** Update `scrollLeft` and prevent the default vertical action only when the rail can actually move.
+**Transformation:**
+1. Add -1 or +1 depending on the activated control.
+2. Wrap the requested index into the valid slide range.
+3. Iterate over the slide collection.
+4. Display the active slide and hide the others.
+5. Update `aria-hidden` where the element supports `setAttribute`.
 
-## 6. No data flow exists for commerce operations
+**Output:** one visible slide. No network request or persistent storage write is performed by the carousel logic itself.
 
-There are no current flows for credentials, user profiles, search queries, cart line items, order records, inventory quantities, payment details, or addresses. Do not draw these as existing components in architecture diagrams.
+## 6. Product rail data flow
 
-## 7. Future data design guardrails
+**Input:** a wheel event on a product rail.
 
-Any future data-driven catalog should define a schema, validation rules, error states, loading states, and a trustworthy source of pricing and availability. Any user-specific or order-related capability must be backed by server-side authorization and data controls. Sensitive credentials must never be embedded in browser code.
+**Transformation:**
+1. Ignore absent events and events where horizontal movement is at least as strong as vertical movement.
+2. Calculate the rail's maximum scroll offset.
+3. Calculate a candidate position using the current `scrollLeft` plus `deltaY`.
+4. Clamp the candidate position between zero and the maximum.
+5. If the position cannot change, allow the browser's normal page scroll.
+6. Otherwise prevent the default wheel action and update `scrollLeft`.
+
+**Output:** a changed horizontal offset for that DOM element. No product data is fetched or modified.
+
+## 7. No current data flow for commerce operations
+
+The repository does not currently process:
+- User credentials or profile data.
+- Search requests or search result records.
+- Cart line items or quantities.
+- Shipping addresses.
+- Inventory reservations.
+- Payment tokens or payment results.
+- Orders, refunds, or customer support records.
+
+Do not draw these as existing runtime services or claim they are protected by controls that have not been implemented.
+
+## 8. Future data design guardrails
+
+If product data becomes dynamic, define a schema and trusted source. If user-specific operations are introduced, define identity, authorization, validation, persistence, retention, and deletion requirements before implementation. Prices, discounts, inventory, order totals, and payment states must be server-authoritative in any real commerce system.
+
+## 9. Related references
+
+- [Architecture](architecture.md)
+- [API status](api.md)
+- [Database status](database.md)
+- [Security review](SECURITY-REVIEW.md)
+- [System design](system-design.md)
