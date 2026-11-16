@@ -1,40 +1,100 @@
-name: Bug report
-description: Report a reproducible issue with the static storefront.
+name: 🐛 Bug report
+description: Report a reproducible issue in the static storefront, tests, or documentation.
 title: "[Bug]: "
-labels: ["bug"]
+labels:
+  - bug
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting an issue. Please check the README and troubleshooting guide first.
+        Do not include passwords, access tokens, personal data, or private information.
   - type: textarea
     id: summary
     attributes:
-      label: What is broken?
-      description: Describe the visible or functional issue.
+      label: Problem summary
+      description: State what is broken and which part of the prototype is affected.
+      placeholder: The next carousel button does not advance to the following slide.
     validations:
       required: true
   - type: textarea
     id: steps
     attributes:
-      label: Steps to reproduce
-    validations:
-      required: true
-  - type: input
-    id: browser
-    attributes:
-      label: Browser and version
+      label: Reproduction steps
+      description: Give exact, numbered steps that another contributor can follow.
+      placeholder: |
+        1. Start the server from the repository root.
+        2. Open http://localhost:8000/.
+        3. Activate the Next carousel button.
     validations:
       required: true
   - type: textarea
     id: expected
     attributes:
       label: Expected behaviour
+      description: Describe the result that should occur.
     validations:
       required: true
   - type: textarea
     id: actual
     attributes:
       label: Actual behaviour
+      description: Describe what actually happens, including any visible error.
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+      placeholder: Chrome 157, Firefox, Safari ...
+    validations:
+      required: true
+  - type: input
+    id: operating-system
+    attributes:
+      label: Operating system and device
+      placeholder: Windows desktop, Android phone, macOS laptop ...
+    validations:
+      required: true
+  - type: input
+    id: commit
+    attributes:
+      label: Commit or branch
+      description: Include the commit SHA or branch if known.
+    validations:
+      required: false
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - HTML structure or content
+        - CSS layout or responsive design
+        - Carousel interaction
+        - Product rail scrolling
+        - Local or remote assets
+        - Automated tests or CI
+        - Accessibility
+        - Documentation
+        - Static hosting or deployment
+        - Other
     validations:
       required: true
   - type: textarea
     id: evidence
     attributes:
-      label: Screenshot or sanitised console output
+      label: Sanitized evidence
+      description: Add screenshots, console output, or network errors. Remove private values.
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission checks
+      options:
+        - label: I searched existing issues and documentation.
+          required: true
+        - label: I can reproduce the issue using the steps above.
+          required: false
+        - label: I removed secrets and personal information from the evidence.
+          required: true
