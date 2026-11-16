@@ -56,9 +56,10 @@ With Python 3:
 
 ```bash
 python scripts/check_html.py
+python scripts/check_docs.py
 ```
 
-The checker verifies required entry files, basic HTML structure, title presence, duplicate IDs, and local file references. It currently reports missing local image references as warnings because the repository does not track the referenced `imgs/` directory.
+The HTML checker verifies required entry files, document metadata, duplicate IDs, image alternative-text attributes, and local file references. The documentation checker verifies non-empty Markdown files, required documentation entry points, and repository-relative Markdown links. It currently reports missing local image references as warnings because the repository does not track the referenced `imgs/` directory.
 
 ## 6. Environment variables
 
