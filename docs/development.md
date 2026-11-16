@@ -44,6 +44,7 @@ Run the server from the repository root. Relative references such as `./amazone.
 node --check amazone.js
 node --test tests/*.test.js
 python scripts/check_html.py
+python scripts/check_docs.py
 ```
 
 The checker reports unresolved local image paths as warnings because the repository currently lacks the referenced `imgs/` directory. Do not suppress these warnings without resolving or documenting the underlying issue.
