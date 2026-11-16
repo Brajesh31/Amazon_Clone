@@ -1,51 +1,84 @@
 # ⚠️ Known Limitations and Technical Boundaries
 
-This list records observed or explicitly documented limitations. It should be revised when source behaviour changes.
+## 1. Purpose
 
-## 1. Functional limitations
+This document is a transparent record of the current prototype's boundaries. It distinguishes missing functionality from defects in functionality that does exist. Update it whenever the source changes.
 
-- Search is a visual input only.
-- Account and list labels are static.
-- Cart is not stateful and has no persistence.
-- Product/category links are placeholders.
-- No product details or purchase action exists.
-- No checkout, payment, order management, or refund process exists.
-- Product text and promotional values are hard-coded in the HTML.
+## 2. Functional limitations
 
-## 2. Data and infrastructure limitations
+| Area | Current state | Practical consequence |
+|---|---|---|
+| Search | Visual input only | Visitors cannot submit a query or filter products |
+| Account | Static sign-in/account labels | No identity, session, or account data |
+| Orders | Static label | No order history or status |
+| Cart | Static icon/link | No item state, quantity, persistence, or checkout |
+| Product details | No product detail route | Cards do not open a complete product view |
+| Categories | Placeholder links | No category route or filtered catalogue |
+| Pricing | Static HTML text | Values are illustrative and not live |
+| Inventory | Not implemented | No stock or availability information |
+| Checkout | Not implemented | No purchase workflow |
+| Payments | Not implemented | No transaction processing |
+| Customer service | Static navigation label | No support workflow |
+
+## 3. Architecture and data limitations
 
 - No application API or backend.
-- No database or persistence layer.
+- No database or persistent data store.
 - No authentication or authorization.
 - No server-side validation.
-- No inventory or price authority.
-- No monitoring or application logging layer.
-- No application environment configuration is required by the current static implementation.
+- No trusted price, discount, or inventory authority.
+- No application logging, telemetry, or health endpoint.
+- No user session or customer record.
+- No package manifest, bundler, or framework runtime.
 
-## 3. Asset limitations
+These are scope boundaries, not evidence that the corresponding systems are partially operational.
 
-- The HTML references 31 unique local image paths under `imgs/`.
-- The tracked repository does not contain an `imgs/` directory.
-- Remote hero, logo, icon, and font URLs may be unavailable, altered, or subject to independent usage terms.
-- Image rights have not been established merely by the presence of a URL in the markup.
+## 4. Asset limitations
+
+The HTML references 31 unique local image paths under `imgs/`, but the tracked repository does not contain that directory. The resulting product/category image slots are unresolved in a clean checkout.
+
+The page also depends on remote hero, logo, icon, and font resources. These can fail or change independently. Usage rights must be reviewed separately for each asset.
 
 See [Asset Inventory](ASSET-INVENTORY.md).
 
-## 4. Accessibility limitations to review
+## 5. Accessibility limitations
 
-- Several images currently use empty alternative text. Verify whether each is decorative or informative before changing it.
-- Some navigation and content regions are presentation-oriented rather than fully functional controls.
-- The carousel has button labels and slide `aria-hidden` updates, but a full screen-reader announcement and reduced-motion strategy are not documented as implemented.
-- Colour contrast and zoom/reflow behaviour require manual browser testing.
+- Many images have empty alternative text and need context-sensitive review.
+- Some visible controls are placeholders rather than functional actions.
+- The carousel has native controls and updates `aria-hidden`, but it has not been demonstrated to meet a complete accessible carousel pattern.
+- Contrast, reading order, zoom, and reflow require manual testing.
+- Product rail discoverability for keyboard and assistive technology users needs review.
 
-See [Accessibility](ACCESSIBILITY.md).
+See [Accessibility Notes](ACCESSIBILITY.md) and [Accessibility Test Plan](accessibility-test-plan.md).
 
-## 5. Security boundaries
+## 6. Security boundaries
 
-The static page does not process credentials or payments. That reduces the current attack surface but does not remove risks from external resources, unsafe future DOM updates, third-party assets, or misleading claims that imply real transactions.
+The page does not process credentials or payments. That reduces the current application attack surface but does not remove risks from external resources, untrusted future DOM updates, asset licensing, or misleading commerce claims.
 
-See [Security](SECURITY-REVIEW.md) and [SECURITY.md](../SECURITY.md).
+Hosting response headers are not defined by the source repository and must be reviewed at deployment time.
 
-## 6. What must not be claimed
+See [Security Review](SECURITY-REVIEW.md) and [Security Policy](../SECURITY.md).
 
-Do not claim production readiness, secure checkout, account support, payment compliance, live inventory, real product search, persistent carts, or operational e-commerce capabilities until those systems are actually implemented and independently validated.
+## 7. Testing limitations
+
+The JavaScript test suite uses a mock DOM. It verifies selected logic paths but cannot prove browser layout, actual device input, network availability, or screen-reader behaviour. No browser automation or visual regression suite is currently configured.
+
+## 8. Claims that must not be made
+
+Until the corresponding systems exist and are independently validated, do not claim:
+- Production readiness.
+- Secure checkout or payment processing.
+- User account or order support.
+- Live inventory or real product search.
+- Persistent carts.
+- Payment compliance.
+- Formal accessibility or security certification.
+
+## 9. How to close a limitation
+
+A limitation is resolved only when:
+1. The required implementation is committed.
+2. Relevant tests and manual checks are performed.
+3. Documentation is updated.
+4. The limitation is removed or revised with evidence.
+5. Any remaining constraints are stated clearly.
