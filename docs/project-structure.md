@@ -1,35 +1,56 @@
 # 🗂️ Project Structure and File Responsibilities
 
-This page describes the repository structure observed in the `main` branch. It is not a generic template. Directory additions should remain tied to actual project needs.
+## 1. Purpose and source of truth
 
-## 1. Current tree
+This document explains the tracked repository layout and the responsibility of each major file. The tree should be updated whenever paths are added, renamed, or removed. It is not a suggested generic structure for a different application.
+
+## 2. Repository tree
 
 ```text
 Amazon_Clone/
 ├── .github/
 │   ├── ISSUE_TEMPLATE/
 │   │   ├── bug_report.yml
+│   │   ├── documentation.yml
 │   │   └── feature_request.yml
 │   ├── workflows/
 │   │   ├── ci.yml
+│   │   ├── docs-check.yml
 │   │   └── update-readme.yml
 │   ├── PULL_REQUEST_TEMPLATE.md
 │   └── dependabot.yml
 ├── .idea/
 │   └── .gitignore
 ├── docs/
+│   ├── adr/
+│   │   └── 0001-static-frontend-prototype.md
 │   ├── ACCESSIBILITY.md
 │   ├── ASSET-INVENTORY.md
 │   ├── QA.md
 │   ├── SECURITY-REVIEW.md
+│   ├── README.md
+│   ├── accessibility-test-plan.md
 │   ├── api.md
 │   ├── architecture.md
+│   ├── data-flow.md
 │   ├── database.md
 │   ├── deployment.md
 │   ├── development.md
+│   ├── documentation-maintenance.md
 │   ├── faq.md
+│   ├── features.md
+│   ├── future-scope.md
+│   ├── glossary.md
 │   ├── installation.md
-│   └── troubleshooting.md
+│   ├── limitations.md
+│   ├── maintenance.md
+│   ├── observability.md
+│   ├── project-overview.md
+│   ├── project-structure.md
+│   ├── system-design.md
+│   ├── testing-strategy.md
+│   ├── troubleshooting.md
+│   └── workflow.md
 ├── scripts/
 │   └── check_html.py
 ├── tests/
@@ -53,74 +74,82 @@ Amazon_Clone/
 └── index.html
 ```
 
-The documentation files added alongside this page are listed in [Documentation Hub](README.md).
+## 3. Browser runtime files
 
-## 2. Root files
+### `index.html`
 
-| File | Responsibility |
-|---|---|
-| `index.html` | Single-page storefront markup and static content |
-| `amazone.css` | Global styles, component-like selectors, responsive rules |
-| `amazone.js` | Carousel and horizontal product rail interaction |
-| `README.md` | Repository introduction and quick-start entry point |
-| `LICENSE` | Repository licensing terms |
-| `.env.example` | Environment example retained in the repository; no application backend is currently configured |
-| `.gitignore` | Files excluded from version control |
-| `.editorconfig` | Basic editor consistency settings |
-| `CHANGELOG.md` | Change history |
-| `ROADMAP.md` | Planned and proposed work |
-| `RELEASE-CHECKLIST.md` | Release preparation checklist |
-| `CONTRIBUTING.md` | Contributor workflow and expectations |
-| `SECURITY.md` | Vulnerability reporting guidance |
-| `SUPPORT.md` | Support and troubleshooting entry points |
-| `CODE_OF_CONDUCT.md` | Community behaviour expectations |
-| `CITATION.cff` | Citation metadata |
-| `CODEOWNERS` | Ownership rules for review routing |
+The main document contains the navigation, search-like input, carousel controls and images, category cards, product rails, deal cards, footer, stylesheet references, and script reference.
 
-## 3. Supporting directories
+The product and promotional text is static. Some visible links are placeholders. The page references local files under `imgs/`, but the directory is not present in the tracked tree.
+
+### `amazone.css`
+
+The stylesheet controls global reset rules, typography, navigation, carousel positioning, card layout, product rail overflow, footer presentation, and responsive rules at 900px, 600px, and 380px.
+
+### `amazone.js`
+
+The script queries carousel slides, controls, and product rails. It selects the first slide, binds previous/next click handlers, and attaches a wheel handler to each product rail.
+
+## 4. Development support directories
 
 ### `.github/`
 
-Contains issue forms, the pull request template, Dependabot configuration, and GitHub Actions workflows. Workflows should be checked against the actual commands and permissions before they are extended.
+Contains issue forms, pull request guidance, Dependabot configuration, and GitHub Actions workflows. These files support repository collaboration and automated checks. They are not loaded by the browser.
 
 ### `docs/`
 
-Contains architecture, setup, development, deployment, asset, accessibility, security, API-status, database-status, QA, and support documentation.
+Contains the documentation hub and technical, product-scope, quality, accessibility, security, asset, deployment, and maintenance references.
+
+### `docs/adr/`
+
+Contains architecture decisions and their context, consequences, and reconsideration criteria.
 
 ### `scripts/`
 
-Contains `check_html.py`, a Python validation utility. It is not part of the browser runtime.
+Contains the Python HTML checker. It is a development tool and not a deployed application dependency.
 
 ### `tests/`
 
-Contains `amazone.test.js`, which exercises the JavaScript behaviour with a dependency-free test harness.
+Contains the Node.js built-in test suite. Tests use a mock DOM to exercise browser interaction logic without a third-party test framework.
 
-## 4. Runtime dependency map
+## 5. Runtime dependency diagram
 
 ```mermaid
 flowchart TD
-    Page[index.html] --> Styles[amazone.css]
-    Page --> Script[amazone.js]
-    Page --> External[External image, font and icon resources]
-    Script --> Slide[Carousel state and controls]
-    Script --> Rail[Horizontal product rails]
-    Tests[tests/amazone.test.js] -. verifies .-> Script
-    Checker[scripts/check_html.py] -. validates .-> Page
+    HTML[index.html] --> CSS[amazone.css]
+    HTML --> JS[amazone.js]
+    HTML --> Remote[Remote visual resources]
+    HTML --> Local[imgs/ relative paths]
+    JS --> Carousel[Carousel behaviour]
+    JS --> Rails[Product rail behaviour]
+    Test[tests/amazone.test.js] -. tests .-> JS
+    Check[scripts/check_html.py] -. validates .-> HTML
+    Local -. directory absent .-> Warning[Unresolved local references]
 ```
 
-## 5. Loading order
+## 6. GitHub automation
 
-1. The browser requests `index.html`.
-2. The document requests `amazone.css` and the externally hosted icon stylesheet.
-3. The browser resolves remote and local image references.
-4. The browser loads `amazone.js` at the end of the body.
-5. The script discovers carousel slides, controls, and product rails, then binds interactions.
+| File | Purpose |
+|---|---|
+| `.github/workflows/ci.yml` | Validates entry files, JavaScript syntax, tests, and HTML references |
+| `.github/workflows/docs-check.yml` | Performs basic documentation checks |
+| `.github/workflows/update-readme.yml` | Updates the README timestamp on its configured schedule or manual dispatch |
+| `.github/dependabot.yml` | Checks GitHub Actions dependencies |
+| `.github/ISSUE_TEMPLATE/bug_report.yml` | Collects reproducible defect reports |
+| `.github/ISSUE_TEMPLATE/feature_request.yml` | Collects enhancement proposals |
+| `.github/ISSUE_TEMPLATE/documentation.yml` | Collects documentation improvements |
+| `.github/PULL_REQUEST_TEMPLATE.md` | Guides contribution review |
 
-## 6. Structure rules for future changes
+## 7. Root governance and metadata
 
-- Keep browser runtime files at the root unless a refactor has a clear benefit.
-- Keep tests separate from runtime code.
-- Put explanatory material in `docs/`, not in arbitrary root-level files.
-- Keep approved visual assets in a clearly named asset directory once their rights and files are verified.
-- Do not add a backend, database, environment secrets, or package manager configuration unless implementation work actually introduces those systems.
-- Update this tree whenever tracked paths change.
+The root contains the README, software licence, contribution guide, code of conduct, security policy, support guide, changelog, roadmap, release checklist, citation metadata, code owners, editor configuration, environment example, and Git ignore rules.
+
+## 8. Structure maintenance rules
+
+- Keep browser runtime code separate from tests and tooling.
+- Put project knowledge in `docs/`.
+- Keep diagrams consistent with actual tracked components.
+- Add assets only after rights and source are verified.
+- Do not add backend or database folders until those systems exist.
+- Do not create empty directories that Git cannot track.
+- Update this tree and documentation hub whenever paths change.
