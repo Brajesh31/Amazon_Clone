@@ -1,28 +1,63 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
+/* --------------------------------------------------------------------------
+   Design tokens
+   Keep the storefront palette and spacing values in one place so visual
+   refinements can be made consistently without changing browser behaviour.
+   -------------------------------------------------------------------------- */
+:root {
+    --color-page: #dadada;
+    --color-header: #131921;
+    --color-navigation: #232f3e;
+    --color-search: #ffffff;
+    --color-search-category: #e5e5e5;
+    --color-search-action: #f3a847;
+    --color-link: #009999;
+    --color-deal: #be0b3b;
+    --color-card: #ffffff;
+    --color-card-muted: #fbfbfb;
+    --color-text-muted: #c4c4c4;
+    --color-focus: #ff9900;
+    --page-gutter: 30px;
+    --card-gap: 20px;
+}
 
-*{
+/* --------------------------------------------------------------------------
+   Global document defaults
+   -------------------------------------------------------------------------- */
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: Outfit;
+    font-family: "Outfit", sans-serif;
 }
 
-body{
-    background-color: #dadada;
+body {
+    background-color: var(--color-page);
 }
 
-a{
+a {
     text-decoration: none;
     color: inherit;
 }
 
-nav{
+/* Use a consistent visible focus treatment for keyboard users. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   Primary navigation
+   -------------------------------------------------------------------------- */
+nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #131921;
-    padding: 0px 10px;
+    background: var(--color-header);
+    padding: 0 10px;
     color: #fff;
 }
 
@@ -31,51 +66,55 @@ nav{
     align-items: end;
     margin-left: 15px;
     font-size: 13px;
-    color: #c4c4c4;
+    color: var(--color-text-muted);
 }
 
-.nav-country h1{
+.nav-country h1 {
     color: #fff;
     font-size: 14px;
 }
 
-.nav-search{
+.nav-search {
     flex: 1;
     display: flex;
     align-items: center;
-    /* justify-content: center; */
-    background: #fff;
+    background: var(--color-search);
     color: gray;
-    /* max-width: 1000px; */
     border-radius: 4px;
     margin-left: 15px;
 }
 
-.nav-search-category{
+.nav-search-category {
     display: flex;
     align-items: center;
-    padding: 10px 10px;
+    padding: 10px;
     gap: 5px;
-    background: #e5e5e5;
+    background: var(--color-search-category);
     border-radius: 4px 0 0 4px;
 }
 
-.nav-search-input{
+.nav-search-input {
     border: none;
     outline: none;
     padding-left: 20px;
     width: 100%;
+    min-width: 0;
 }
 
-.nav-search-icon{
+.nav-search-input:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: -2px;
+}
+
+.nav-search-icon {
     max-width: 49px;
     height: 100%;
     padding: 8px;
-    background: #F3A847;
+    background: var(--color-search-action);
     border-radius: 0 4px 4px 0;
 }
 
-.nav-language{
+.nav-language {
     display: flex;
     align-items: center;
     gap: 2px;
@@ -83,55 +122,60 @@ nav{
     margin-left: 15px;
 }
 
-.nav-text{
+.nav-text {
     margin-left: 15px;
 }
 
-.nav-text p{
+.nav-text p {
     font-size: 10px;
 }
 
-.nav-text h1{
+.nav-text h1 {
     font-size: 14px;
 }
 
-.nav-cart{
+.nav-cart {
     display: flex;
     align-items: center;
-    margin: 0px 15px;
-    /* background-color: red; */
-    /* justify-content: spac; */
-    /* gap: 0px; */
+    margin: 0 15px;
 }
 
-.nav-bottom{
+/* --------------------------------------------------------------------------
+   Secondary navigation
+   -------------------------------------------------------------------------- */
+.nav-bottom {
     display: flex;
     align-items: center;
     gap: 20px;
     padding: 8px 20px;
-    background: #232f3e;
+    background: var(--color-navigation);
     color: #fff;
     font-size: 15px;
 }
 
-.nav-bottom div{
+.nav-bottom div {
     display: flex;
     align-items: center;
     gap: 2px;
     font-weight: 500;
 }
 
-.header-slider ul{
+/* --------------------------------------------------------------------------
+   Hero image carousel
+   JavaScript controls which image is visible. CSS controls its presentation.
+   -------------------------------------------------------------------------- */
+.header-slider ul {
     display: flex;
     overflow-y: hidden;
 }
 
-.header-img{
+.header-img {
     max-width: 100%;
+    height: auto;
     mask-image: linear-gradient(to bottom, #000000 50%, transparent 100%);
 }
 
-.header-slider button{
+.header-slider button {
     position: absolute;
     top: 40%;
     z-index: 1;
@@ -146,99 +190,115 @@ nav{
 }
 
 .header-slider button:focus-visible {
-    outline: 3px solid #ff9900;
+    outline: 3px solid var(--color-focus);
     outline-offset: 2px;
 }
 
-.control_next{
+.control_next {
     right: 0;
 }
 
-.box-row{
+/* --------------------------------------------------------------------------
+   Category and promotional cards
+   -------------------------------------------------------------------------- */
+.box-row {
     display: flex;
     flex-wrap: wrap;
-    row-gap: 20px;
+    row-gap: var(--card-gap);
     justify-content: space-between;
-    margin: 20px 30px;
+    margin: 20px var(--page-gutter);
 }
 
-.box-col{
+.box-col {
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding: 15px 20px;
-    background: #fff;
+    background: var(--color-card);
     max-width: 24%;
     min-width: 200px;
     z-index: 1;
 }
 
-.box-col a{
+.box-col a {
     font-size: 13px;
-    color: #009999;
+    color: var(--color-link);
     font-weight: 500;
 }
 
-.header-box{
+.header-box {
     margin-top: -20vw;
 }
 
-.products-slider{
-    background: #fff;
-    margin: 0 30px;
+/* --------------------------------------------------------------------------
+   General product rails
+   Horizontal overflow is native; JavaScript only adds vertical-wheel support.
+   -------------------------------------------------------------------------- */
+.products-slider {
+    background: var(--color-card);
+    margin: 0 var(--page-gutter);
     padding: 20px;
     margin-bottom: 15px;
 }
 
-.products-slider .products{
+.products-slider .products {
     display: flex;
     overflow-x: auto;
-    gap: 20px;
+    gap: var(--card-gap);
     margin-top: 10px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
-.products-slider .products img{
+.products-slider .products img {
     max-width: 200px;
-    max-height: 200;
+    max-height: 200px;
+    object-fit: contain;
 }
 
-.products-slider .products::-webkit-scrollbar{
+.products-slider .products::-webkit-scrollbar,
+.products-slider-with-price .products::-webkit-scrollbar {
     display: none;
 }
 
-.products-slider-with-price{
-    background: #fff;
-    margin: 0 30px;
+/* --------------------------------------------------------------------------
+   Product cards with illustrative deal information
+   Prices and discount labels are static page content, not live offers.
+   -------------------------------------------------------------------------- */
+.products-slider-with-price {
+    background: var(--color-card);
+    margin: 0 var(--page-gutter);
     padding: 20px;
     margin-bottom: 15px;
 }
 
-.products-slider-with-price .products{
+.products-slider-with-price .products {
     display: flex;
     overflow-x: auto;
-    gap: 20px;
+    gap: var(--card-gap);
     margin-top: 10px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
-.products-slider-with-price .products::-webkit-scrollbar{
-    display: none;
-}
-
-.product-card{
+.product-card {
     display: flex;
     flex-direction: column;
     justify-content: end;
     min-width: 210px;
-    background-color: #fbfbfb;
+    background-color: var(--color-card-muted);
 }
 
-.product-card img{
+.product-card img {
     width: 110px;
-    margin: 0 50px;
+    max-width: 100%;
+    height: 150px;
+    object-fit: contain;
+    margin: 0 auto;
 }
 
-.product-offer p{
-    background: #be0b3b;
+.product-offer p {
+    background: var(--color-deal);
     color: #fff;
     display: inline-block;
     padding: 2px 5px;
@@ -247,33 +307,38 @@ nav{
     font-size: 13px;
 }
 
-.product-offer span{
-    color: #be0b3b;
+.product-offer span {
+    color: var(--color-deal);
     font-weight: 500;
     font-size: 12px;
 }
 
-.product-price{
+.product-price {
     color: gray;
     font-size: 13px;
 }
 
-.product-price h4{
+.product-card h4 {
     color: #525252;
     font-size: 15px;
     font-weight: 400;
 }
 
-footer{
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: #fff;
-    background-color: #131921;
+    background-color: var(--color-header);
     padding: 20px 60px;
 }
 
-/* Responsive layout adjustments */
+/* --------------------------------------------------------------------------
+   Tablet layout
+   -------------------------------------------------------------------------- */
 @media (max-width: 900px) {
     nav {
         flex-wrap: wrap;
@@ -307,6 +372,9 @@ footer{
     }
 }
 
+/* --------------------------------------------------------------------------
+   Mobile layout
+   -------------------------------------------------------------------------- */
 @media (max-width: 600px) {
     nav {
         justify-content: flex-start;
@@ -366,8 +434,21 @@ footer{
     }
 }
 
+/* Very narrow phones: stack category cards instead of squeezing the content. */
 @media (max-width: 380px) {
     .box-col {
         min-width: 100%;
+    }
+}
+
+/* Keep future scrolling/transition effects calm for reduced-motion users. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }
