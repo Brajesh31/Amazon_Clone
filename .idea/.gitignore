@@ -1,8 +1,16 @@
-# Default ignored files
+# IntelliJ IDEA / WebStorm user-specific workspace state.
+# Keep shared project configuration only when it is deliberately reviewed.
+
+# User workspace and shelf data
 /shelf/
 /workspace.xml
-# Editor-based HTTP Client requests
+
+# Local HTTP client request history
 /httpRequests/
-# Datasource local storage ignored files
+
+# Local database connections and data source state
 /dataSources/
 /dataSources.local.xml
+
+# Local usage and generated IDE metadata
+/usage.statistics.xml
