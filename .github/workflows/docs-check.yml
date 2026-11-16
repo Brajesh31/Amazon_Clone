@@ -1,0 +1,39 @@
+name: Documentation checks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "README.md"
+      - "docs/**"
+      - ".github/workflows/docs-check.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "README.md"
+      - "docs/**"
+      - ".github/workflows/docs-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  markdown-basics:
+    name: Check documentation structure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Verify Markdown files are non-empty
+        shell: bash
+        run: |
+          set -euo pipefail
+          find . -path "./.git" -prune -o -type f -name "*.md" -print0 |
+            while IFS= read -r -d '' file; do
+              test -s "$file" || { echo "Empty Markdown file: $file"; exit 1; }
+            done
+      - name: Verify documentation hub exists
+        run: test -s docs/README.md
+      - name: Verify README has documentation entry point
+        run: grep -Fq "docs/README.md" README.md
