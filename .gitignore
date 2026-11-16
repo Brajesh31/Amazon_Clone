@@ -1,24 +1,44 @@
-# Operating-system files
+# Operating-system metadata
 .DS_Store
 Thumbs.db
 Desktop.ini
+.AppleDouble
+.LSOverride
 
-# Editor metadata
+# IDE and editor workspace state
 .vscode/
 .idea/
 *.swp
+*.swo
+*~
 
-# Local environment files
+# Local environment and secret files
 .env
 .env.*
 !.env.example
 
-# Development and test output
+# Logs and temporary output
 *.log
+logs/
+tmp/
+temp/
+
+# JavaScript test and coverage output
 coverage/
 .nyc_output/
+
+# Build output, should a build system be introduced later
 dist/
 build/
+
+# Python caches and virtual environments
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.venv/
+venv/
+
+# OS and packaging artifacts
+*.zip
+*.tar
+*.gz
