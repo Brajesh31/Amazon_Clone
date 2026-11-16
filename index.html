@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An independent Amazon-inspired static storefront prototype built with HTML, CSS, and vanilla JavaScript.">
+    <meta name="theme-color" content="#131921">
     <title>Amazon-inspired Storefront Prototype</title>
     <link rel="stylesheet" href="./amazone.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -12,6 +14,7 @@
 </head>
 
 <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <nav aria-label="Main navigation">
         <a href="/">
             <img src="https://static.vecteezy.com/system/resources/previews/019/017/542/original/amazon-logo-free-png.png"
@@ -46,10 +49,10 @@
             <p>Return</p>
             <h1>& Orders</h1>
         </div>
-        <a href="" class="nav-cart">
+        <div class="nav-cart" aria-label="Cart, demonstration only">
             <i class="fa-solid fa-cart-shopping" style="width: 35px;"></i>
             <h3>Cart</h3>
-        </a>
+        </div>
     </nav>
     <div class="nav-bottom">
         <div>
@@ -63,23 +66,24 @@
         <p>Sell</p>
     </div>
 
-    <div class="header-slider" aria-label="Promotional image carousel">
+    <main id="main-content">
+    <section class="header-slider" role="region" aria-roledescription="carousel" aria-label="Promotional image carousel">
         <button type="button" class="control_prev" aria-label="Previous promotional image">&#129144;</button>
         <button type="button" class="control_next" aria-label="Next promotional image">&#129146;</button>
-        <ul>
+        <div class="header-slides">
             <img src="https://m.media-amazon.com/images/I/71VcGrxQRBL._SX3000_.jpg" class="header-img" alt="">
             <img src="https://m.media-amazon.com/images/I/71Ie3JXGfVL._SX3000_.jpg" class="header-img" alt="">
             <img src="https://m.media-amazon.com/images/I/61zAjw4bqPL._SX3000_.jpg" class="header-img" alt="">
             <img src="https://m.media-amazon.com/images/I/61lwJy4B8PL._SX3000_.jpg" class="header-img" alt="">
             <img src="https://m.media-amazon.com/images/I/81KkrQWEHIL._SX3000_.jpg" class="header-img" alt="">
-        </ul>
-    </div>
+        </div>
+    </section>
 
     <div class="box-row header-box">
         <div class="box-col">
             <h3>Free international</h3>
             <img src="imgs/GirlWatches_1x._SY116_CB564394432_.jpg" alt="">
-            <a href="#">Shop more</a>
+            <span class="shop-more">Shop more</span>
         </div>
         <div class="box-col">
             <h3>Lunar New Year</h3>
@@ -315,6 +319,8 @@
             <a href="#">Shop more</a>
         </div>
     </div>
+
+    </main>
 
     <footer>
         <img src="https://static.vecteezy.com/system/resources/previews/019/017/542/original/amazon-logo-free-png.png"
