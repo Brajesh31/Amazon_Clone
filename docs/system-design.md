@@ -2,13 +2,13 @@
 
 ## 1. Design scope
 
-This document describes the current static storefront and records constraints for future evolution. It is not a design for a deployed commerce backend.
+This document describes the current static storefront and the design constraints that should guide future changes. It is not a specification for a production commerce backend.
 
-## 2. Current component boundaries
+## 2. Current system context
 
 ```mermaid
 flowchart TB
-    subgraph Browser["Browser runtime"]
+    subgraph Runtime[Browser runtime]
       DOM[HTML document and static content]
       CSS[CSS presentation]
       JS[Vanilla JavaScript interactions]
@@ -16,52 +16,76 @@ flowchart TB
       DOM --> JS
       JS --> DOM
     end
-    subgraph Checks["Development checks"]
-      TEST[Node built-in tests]
-      VALIDATOR[Python HTML checker]
+    subgraph Dev[Development validation]
+      TEST[Node.js built-in tests]
+      CHECK[Python HTML checker]
+      CI[GitHub Actions]
     end
     TEST -. tests .-> JS
-    VALIDATOR -. inspects .-> DOM
-    EXT[External resource hosts] --> DOM
+    CHECK -. inspects .-> DOM
+    CI --> TEST
+    CI --> CHECK
+    EXT[External image, font and icon hosts] --> DOM
+    MISSING[Missing local imgs directory] -. unresolved paths .-> DOM
 ```
 
-The component boundaries are file-level boundaries. The project does not currently have separate frontend and backend services.
+The component boundaries are file-level boundaries. There is no separate frontend service, backend service, or database.
 
-## 3. Runtime characteristics
+## 3. Runtime responsibilities
 
-- Static resources are loaded by the browser.
-- JavaScript runs in the page context.
-- Carousel state is held in memory.
-- Product rail position is managed by browser elements.
-- Product and promotional content is static HTML.
-- External resources introduce network and availability dependencies.
-- Local image references are unresolved in the current tracked tree.
+| Component | Input | Processing | Output |
+|---|---|---|---|
+| HTML document | Repository markup | Browser parsing | DOM structure and static text |
+| CSS stylesheet | DOM and viewport | Selector matching and layout | Visual presentation |
+| Carousel script | Click events and slide collection | Active index calculation | Visible slide and ARIA state |
+| Product rail handler | Wheel event and element dimensions | Axis comparison and clamped scroll calculation | Updated horizontal offset |
+| External resources | Browser HTTP requests | Third-party host response | Images, fonts, and icons when available |
 
-## 4. Scaling characteristics
+## 4. State model
 
-The page is appropriate as a small learning prototype. As static content grows, maintainability may become difficult because product cards and labels are duplicated in markup. A lightweight data array and reusable rendering function could reduce repetition, but should be introduced only with tests and a deliberate refactor.
+- Carousel state is a local integer held in the JavaScript closure.
+- Product rail positions are native DOM element properties.
+- Static product and category content is held in the HTML document.
+- Responsive presentation is calculated by the browser from CSS media queries.
+- There is no persistent user state or server-side data model.
 
-A real marketplace requires a different architecture, including server-side catalog and order services, identity and authorization, persistent storage, inventory consistency, payment-provider integration, observability, abuse prevention, and operational controls.
+## 5. Quality and scaling considerations
 
-## 5. Key design constraints
+The current design is appropriate for a small learning prototype. As the page grows, duplicated product markup may become difficult to maintain. A small local data structure and a reusable rendering function could reduce repetition, but should be introduced with a clear schema, safe DOM construction, and tests.
 
-| Concern | Current approach | Constraint |
+Adding a framework or backend without a concrete requirement would increase setup and maintenance costs without solving a demonstrated problem.
+
+## 6. Current design constraints
+
+| Concern | Current design | Consequence |
 |---|---|---|
-| Catalog | Static HTML | Manual updates; no authoritative feed |
-| Interaction state | Browser memory and DOM | Lost on reload |
-| Search | No implementation | Cannot discover/filter products |
+| Catalog | Static HTML | Manual content updates |
+| Search | No implementation | No product discovery/filtering |
 | Account | No implementation | No identity or access control |
 | Cart | No implementation | No purchase intent persistence |
-| Payments | No implementation | No transaction handling |
-| Images | Local missing paths plus external URLs | Broken slots and third-party dependency |
-| Testing | Node test runner and Python checker | No full browser end-to-end suite |
+| Payment | No implementation | No transaction handling |
+| Inventory | No implementation | No stock authority |
+| Images | Missing local paths and remote URLs | Broken image slots and external dependency |
+| State | Browser memory and DOM | No persistence |
+| Tests | Mock DOM and static checker | No real browser automation |
 
-## 6. Proposed evolution sequence
+## 7. Future architecture decision gates
 
-1. Resolve image inventory and usage rights.
-2. Improve semantic markup, keyboard operation, and accessibility.
-3. Extract repeated product presentation into a small data model.
-4. Add meaningful browser tests for new behaviours.
-5. Only then define requirements for any API or persistent service.
+Before introducing a data service, decide:
+- Whether static data remains sufficient.
+- What user problem requires dynamic behaviour.
+- Which component owns each data field.
+- What needs to persist and for how long.
+- What security boundary is required.
+- How failures and retries behave.
+- How the feature will be tested and operated.
 
-Avoid adding distributed-system diagrams or infrastructure components that the repository does not contain.
+A real marketplace requires separate design for server-side catalogue, identity, authorization, cart, inventory, orders, payments, privacy, monitoring, and incident response.
+
+## 8. Non-goals
+
+Do not add distributed-system components, queues, caching services, databases, payment gateways, or microservices to diagrams as if they already exist. Keep current architecture diagrams factual.
+
+## 9. Related decision
+
+See [ADR 0001](adr/0001-static-frontend-prototype.md) for the decision to retain a dependency-light static frontend until a concrete requirement justifies a change.
