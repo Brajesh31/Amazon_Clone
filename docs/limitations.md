@@ -13,7 +13,7 @@ This document is a transparent record of the current prototype's boundaries. It 
 | Orders | Static label | No order history or status |
 | Cart | Static icon/link | No item state, quantity, persistence, or checkout |
 | Product details | No product detail route | Cards do not open a complete product view |
-| Categories | Placeholder links | No category route or filtered catalogue |
+| Categories | Non-interactive labels | No category route or filtered catalogue |
 | Pricing | Static HTML text | Values are illustrative and not live |
 | Inventory | Not implemented | No stock or availability information |
 | Checkout | Not implemented | No purchase workflow |
