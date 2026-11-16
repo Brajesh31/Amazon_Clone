@@ -41,6 +41,22 @@ a {
     color: inherit;
 }
 
+/* Skip link stays hidden until keyboard focus reaches it. */
+.skip-link {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 20;
+    padding: 10px 14px;
+    color: #111;
+    background: #fff;
+    transform: translateY(-160%);
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+}
+
 /* Use a consistent visible focus treatment for keyboard users. */
 a:focus-visible,
 button:focus-visible,
@@ -164,7 +180,7 @@ nav {
    Hero image carousel
    JavaScript controls which image is visible. CSS controls its presentation.
    -------------------------------------------------------------------------- */
-.header-slider ul {
+.header-slides {
     display: flex;
     overflow-y: hidden;
 }
@@ -220,7 +236,7 @@ nav {
     z-index: 1;
 }
 
-.box-col a {
+.box-col .shop-more {
     font-size: 13px;
     color: var(--color-link);
     font-weight: 500;
