@@ -1,3 +1,5 @@
+# EditorConfig keeps whitespace and line endings consistent across contributors.
+# These rules do not replace language-specific formatting or validation.
 root = true
 
 [*]
@@ -12,6 +14,7 @@ trim_trailing_whitespace = true
 indent_size = 2
 
 [*.md]
+# Preserve Markdown hard line breaks and intentional trailing spaces.
 trim_trailing_whitespace = false
 
 [*.html]
