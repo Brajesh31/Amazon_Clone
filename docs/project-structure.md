@@ -81,7 +81,7 @@ Amazon_Clone/
 
 The main document contains the navigation, search-like input, carousel controls and images, category cards, product rails, deal cards, footer, stylesheet references, and script reference.
 
-The product and promotional text is static. Some visible links are placeholders. The page references local files under `imgs/`, but the directory is not present in the tracked tree.
+The product and promotional text is static. Category 'Shop more' labels are non-interactive text, and product images are not linked to detail pages. The page references local files under `imgs/`, but the directory is not present in the tracked tree.
 
 ### `amazone.css`
 
