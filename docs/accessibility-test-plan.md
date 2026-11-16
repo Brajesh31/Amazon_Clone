@@ -1,39 +1,84 @@
 # ♿ Accessibility Test Plan
 
-This plan supplements [Accessibility Notes](ACCESSIBILITY.md). It is a test checklist, not a claim of conformance.
+## 1. Purpose and status
 
-## Keyboard checks
+This plan provides repeatable manual checks for the current storefront. It is a test plan, not a completed audit or a claim of WCAG conformance. Record actual results when tests are performed.
 
-- [ ] Tab through all interactive elements in a logical order.
-- [ ] Confirm visible focus styles.
-- [ ] Activate carousel controls using Enter and Space.
-- [ ] Confirm no non-functional placeholder element is presented as an actionable control.
-- [ ] Confirm focus is not hidden behind sticky or overlapping content.
+## 2. Keyboard navigation
 
-## Screen-reader checks
+- [ ] Load the page and navigate using Tab only.
+- [ ] Confirm the focus order follows the visible content order.
+- [ ] Confirm every real action is keyboard reachable.
+- [ ] Confirm carousel buttons activate with Enter and Space.
+- [ ] Confirm focus indicators are visible against each background.
+- [ ] Confirm focus is not clipped by an overflow container.
+- [ ] Confirm no keyboard trap exists.
+- [ ] Confirm placeholder links do not falsely advertise unavailable actions.
 
-- [ ] Confirm document title and primary navigation landmark.
-- [ ] Confirm buttons expose meaningful accessible names.
-- [ ] Confirm informative images have useful alternative text.
-- [ ] Confirm decorative images are ignored by assistive technology.
-- [ ] Confirm inactive carousel slides are not announced as visible content.
-- [ ] Confirm heading levels describe the content hierarchy.
+## 3. Screen-reader and semantics review
 
-## Visual and responsive checks
+- [ ] Confirm the document language is correctly declared.
+- [ ] Confirm the page title describes the page.
+- [ ] Confirm navigation and main content landmarks are discoverable.
+- [ ] Confirm heading levels communicate the page hierarchy.
+- [ ] Confirm controls expose useful accessible names.
+- [ ] Confirm the search input label explains its demonstration-only status.
+- [ ] Confirm informative images have accurate alternative text.
+- [ ] Confirm decorative images use empty alternative text.
+- [ ] Confirm inactive carousel slides are not exposed as active content.
+- [ ] Confirm carousel state changes are understandable to screen-reader users.
 
-- [ ] Check text contrast against the actual backgrounds.
-- [ ] Zoom to 200% and verify content remains usable.
-- [ ] Test narrow viewport widths and text reflow.
-- [ ] Check that content is not conveyed through colour alone.
-- [ ] Confirm product rails remain discoverable without a mouse wheel.
-- [ ] Respect reduced-motion preferences if motion is introduced.
+## 4. Visual accessibility
 
-## Important implementation notes
+- [ ] Check text contrast against the actual rendered backgrounds.
+- [ ] Check focus indicator contrast.
+- [ ] Zoom to 200% and inspect layout.
+- [ ] Increase text size and confirm labels remain visible.
+- [ ] Check narrow viewport reflow.
+- [ ] Confirm meaning is not conveyed through colour alone.
+- [ ] Confirm controls have sufficient size and spacing for practical activation.
+- [ ] Review images and text at high display scaling.
 
-The current carousel updates `aria-hidden` on slides, and its controls have accessible labels. This is a useful baseline but not a complete accessible carousel pattern. Consider focus order, announcements, pause controls if autoplay is ever added, and reduced-motion handling.
+## 5. Product rail interaction
 
-The current HTML contains many empty image alt attributes. Each must be reviewed in context: empty alt is appropriate only when the image is decorative or redundant with adjacent text.
+- [ ] Confirm horizontal scrolling works with a trackpad.
+- [ ] Confirm horizontal scrolling is not available only through a mouse wheel.
+- [ ] Test keyboard access and focus order around product content.
+- [ ] Confirm page scrolling continues at rail boundaries.
+- [ ] Ensure hidden or clipped content remains discoverable where necessary.
 
-## Reporting
+## 6. Carousel-specific review
 
-Include browser, assistive technology, viewport, keyboard steps, expected outcome, and actual outcome in an accessibility issue. Avoid sharing personal or sensitive user information in screenshots.
+The current carousel does not autoplay. Its native buttons have accessible labels and JavaScript updates `aria-hidden` on slides.
+
+- [ ] Confirm button labels distinguish previous and next.
+- [ ] Confirm each slide's alternative text communicates meaningful content.
+- [ ] Confirm inactive slides are hidden from visual and assistive technology presentation.
+- [ ] Confirm focus remains on the activated button after a change.
+- [ ] Confirm repeated activation does not produce unexpected focus movement.
+- [ ] If autoplay is ever added, require pause/stop controls and reduced-motion consideration before release.
+
+## 7. Browser and assistive technology record
+
+For each completed test, record:
+- Browser and version.
+- Operating system.
+- Screen reader and version, if used.
+- Viewport and zoom level.
+- Test steps.
+- Expected result.
+- Actual result.
+- Defect link or follow-up action.
+
+Do not claim a test passed when it was not performed.
+
+## 8. Reporting
+
+Create an accessibility issue with a concise summary, affected page section, reproducible steps, impact, and sanitized evidence. Avoid including personal or sensitive information in screenshots.
+
+## 9. Related references
+
+- [Accessibility Notes](ACCESSIBILITY.md)
+- [Quality Assurance](QA.md)
+- [Feature Reference](features.md)
+- [Contribution Guide](../CONTRIBUTING.md)
