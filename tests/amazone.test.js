@@ -9,6 +9,11 @@ const source = fs.readFileSync(
     "utf8"
 );
 
+/**
+ * Create the smallest DOM-like object required by amazone.js.
+ * The mock records event options and attribute changes so tests can verify
+ * browser interaction decisions without claiming to emulate browser layout.
+ */
 function createElement({ scrollLeft = 0, scrollWidth = 300, clientWidth = 100 } = {}) {
     const listeners = new Map();
     const attributes = {};
@@ -34,11 +39,17 @@ function createElement({ scrollLeft = 0, scrollWidth = 300, clientWidth = 100 } 
     };
 }
 
+/**
+ * Execute the production script in an isolated mock document.
+ * Each test gets fresh elements so state cannot leak between cases.
+ */
 function boot({ slideCount = 3, includeControls = true, railCount = 1 } = {}) {
     const slides = Array.from({ length: slideCount }, () => createElement());
     const previous = includeControls ? createElement() : null;
     const next = includeControls ? createElement() : null;
-    const rails = Array.from({ length: railCount }, () => createElement({ scrollLeft: 50 }));
+    const rails = Array.from({ length: railCount }, () =>
+        createElement({ scrollLeft: 50 })
+    );
 
     const document = {
         querySelectorAll(selector) {
@@ -163,4 +174,79 @@ test("each product rail receives its own wheel handler", () => {
     for (const rail of rails) {
         assert.ok(rail.listeners.has("wheel"));
     }
+});
+
+test("a one-slide carousel remains on the only available slide", () => {
+    const { slides, previous, next } = boot({ slideCount: 1 });
+
+    previous.dispatch("click", { preventDefault() {} });
+    next.dispatch("click", { preventDefault() {} });
+
+    assert.equal(slides[0].style.display, "block");
+    assert.equal(slides[0].attributes["aria-hidden"], "false");
+});
+
+test("vertical wheel movement is clamped at the beginning of a rail", () => {
+    const { rails } = boot();
+    rails[0].scrollLeft = 20;
+    let prevented = false;
+
+    rails[0].dispatch("wheel", {
+        deltaX: 0,
+        deltaY: -100,
+        preventDefault() {
+            prevented = true;
+        },
+    });
+
+    assert.equal(rails[0].scrollLeft, 0);
+    assert.equal(prevented, true);
+});
+
+test("large wheel movement is clamped at the end of a rail", () => {
+    const { rails } = boot();
+    let prevented = false;
+
+    rails[0].dispatch("wheel", {
+        deltaX: 0,
+        deltaY: 1000,
+        preventDefault() {
+            prevented = true;
+        },
+    });
+
+    assert.equal(rails[0].scrollLeft, 200);
+    assert.equal(prevented, true);
+});
+
+test("equal horizontal and vertical wheel deltas are left to the browser", () => {
+    const { rails } = boot();
+    let prevented = false;
+
+    rails[0].dispatch("wheel", {
+        deltaX: 20,
+        deltaY: 20,
+        preventDefault() {
+            prevented = true;
+        },
+    });
+
+    assert.equal(rails[0].scrollLeft, 50);
+    assert.equal(prevented, false);
+});
+
+test("wheel listener is non-passive so a movable rail can cancel default scrolling", () => {
+    const { rails } = boot();
+    const listener = rails[0].listeners.get("wheel");
+
+    assert.deepEqual(listener.options, { passive: false });
+});
+
+test("rail still moves when a synthetic event has no preventDefault method", () => {
+    const { rails } = boot();
+
+    assert.doesNotThrow(() => {
+        rails[0].dispatch("wheel", { deltaX: 0, deltaY: 25 });
+    });
+    assert.equal(rails[0].scrollLeft, 75);
 });
