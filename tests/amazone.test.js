@@ -53,7 +53,7 @@ function boot({ slideCount = 3, includeControls = true, railCount = 1 } = {}) {
 
     const document = {
         querySelectorAll(selector) {
-            if (selector === ".header-slider ul img") return slides;
+            if (selector === ".header-slider .header-slides img") return slides;
             if (selector === ".products") return rails;
             return [];
         },
