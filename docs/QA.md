@@ -13,8 +13,8 @@ It does not claim end-to-end coverage of an e-commerce system. The repository ha
 | Required source files | CI file checks | HTML, CSS, and JS entry files exist |
 | JavaScript syntax | `node --check amazone.js` | No syntax errors |
 | JavaScript behaviour | `node --test tests/*.test.js` | All test cases pass |
-| HTML/reference validation | `python scripts/check_html.py
-python scripts/check_docs.py` | Required structure is valid; missing assets are reported |
+| HTML/reference validation | `python scripts/check_html.py` | Required structure is valid; missing assets are reported |
+| Documentation validation | `python scripts/check_docs.py` | Markdown files and local relative links are valid |
 | Browser smoke test | Manual HTTP preview | Page and interactions render without unexpected console errors |
 | Responsive review | Browser viewport testing | Content remains readable and controls usable |
 | Accessibility review | Keyboard and assistive technology | Meaningful names, order, focus, and alternatives |
@@ -33,6 +33,7 @@ The current test suite uses Node.js built-in modules and a lightweight mock DOM.
 - Navigation wraps at the first and final slide.
 - Default click behaviour is prevented when a suitable event is provided.
 - Empty slide collections and absent controls do not crash the script.
+- A one-slide carousel remains on its only slide after previous or next activation.
 
 ### Product rail cases
 
