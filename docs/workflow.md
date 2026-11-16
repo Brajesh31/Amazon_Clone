@@ -1,94 +1,119 @@
 # 🔄 Application Workflow and Interaction Specification
 
-## 1. Overview
+## 1. Scope
 
-The application is a static page. Its workflow is browser-side rendering plus two JavaScript interactions: changing the visible hero slide and scrolling product rails horizontally in response to vertical wheel input.
+The current application workflow is limited to loading a static page and handling two browser interactions: selecting a hero slide and scrolling product rails horizontally. The diagrams below describe existing behaviour, not future e-commerce workflows.
 
 ## 2. Initial page load
 
 ```mermaid
 flowchart TD
-    A[Visitor opens site] --> B[Browser requests index.html]
-    B --> C[Load stylesheet and external resources]
-    C --> D[Resolve image references]
-    D --> E[Load amazone.js]
-    E --> F[Find carousel slides and controls]
-    F --> G{Any slides found?}
-    G -- Yes --> H[Show first slide]
-    G -- No --> I[Skip initial slide update]
-    H --> J[Bind previous and next controls]
+    A[Visitor requests page] --> B[Browser loads index.html]
+    B --> C[Parse metadata and markup]
+    C --> D[Request amazone.css and icon stylesheet]
+    D --> E[Resolve image resources]
+    E --> F[Load amazone.js]
+    F --> G[Query slides, controls and product rails]
+    G --> H{At least one slide?}
+    H -- Yes --> I[Display slide at index zero]
+    H -- No --> J[Skip slide initialization]
+    I --> K[Bind available carousel controls]
+    J --> K
+    K --> L[Attach wheel handler to each product rail]
+    L --> M[Page ready for supported interactions]
+```
+
+### Startup details
+
+1. The browser requests the HTML document.
+2. The document references the local stylesheet and a remote icon stylesheet.
+3. Remote hero and interface resources are requested from their respective hosts.
+4. Relative local image references are resolved against the page URL.
+5. The JavaScript file is loaded at the end of the body.
+6. The script collects the relevant elements and attaches event handlers.
+7. The first slide is displayed when the slide collection is non-empty.
+
+A missing local image does not stop the JavaScript carousel from initializing, but it does create a broken visual resource.
+
+## 3. Carousel workflow
+
+The active slide index is held in a local variable. A previous action requests direction -1; a next action requests direction +1.
+
+```mermaid
+flowchart TD
+    A[User activates previous or next] --> B[Receive click event]
+    B --> C[Prevent default action when available]
+    C --> D[Add direction to current index]
+    D --> E[Wrap index within slide count]
+    E --> F[Iterate through all slides]
+    F --> G{Current slide is active?}
+    G -- Yes --> H[Set display block and aria-hidden false]
+    G -- No --> I[Set display none and aria-hidden true]
+    H --> J[Carousel state updated]
     I --> J
-    J --> K[Bind wheel handlers to product rails]
-    K --> L[Page is interactive]
 ```
 
-## 3. Hero carousel workflow
+### Carousel edge cases
 
-The JavaScript stores the active slide index in a local variable. The `showSlide` function wraps requested indices using modulo arithmetic so navigation can move from the last slide to the first and vice versa.
+| Case | Current behaviour |
+|---|---|
+| No slides found | No slide update is attempted |
+| One slide | Previous/next resolves to the same slide |
+| Missing previous control | Previous handler is not attached |
+| Missing next control | Next handler is not attached |
+| Event has no `preventDefault` method | Script continues without calling it |
+| First/last boundary | Index wraps to the opposite end |
+
+The current implementation has no autoplay, swipe gesture, pagination indicator, or persisted slide choice.
+
+## 4. Product rail workflow
 
 ```mermaid
 flowchart TD
-    A[User activates carousel control] --> B[Prevent default action when available]
-    B --> C[Add direction to active index]
-    C --> D[Wrap index within slide count]
-    D --> E[Iterate over slides]
-    E --> F{Slide index equals active index?}
-    F -- Yes --> G[Display slide and set aria-hidden false]
-    F -- No --> H[Hide slide and set aria-hidden true]
-    G --> I[Carousel updated]
-    H --> I
+    A[Wheel event reaches a product rail] --> B{Vertical movement dominates?}
+    B -- No --> C[Leave native browser handling]
+    B -- Yes --> D[Calculate maximum horizontal offset]
+    D --> E[Calculate candidate scrollLeft]
+    E --> F[Clamp candidate between zero and maximum]
+    F --> G{Can the rail move?}
+    G -- No --> C
+    G -- Yes --> H[Prevent default vertical wheel action]
+    H --> I[Set rail scrollLeft]
+    I --> J[Horizontal content advances]
 ```
 
-**Current implementation details**
+The event is not cancelled when the rail cannot move. This is intentional so visitors can continue scrolling the page at the beginning or end of a product row.
 
-- The first slide is selected on startup when slides exist.
-- Previous and next buttons are optional guarded controls.
-- A missing slide collection does not throw an error.
-- Button activation prevents the default event action where the event exposes that method.
-- The script does not implement autoplay, pagination dots, swipe gestures, or persisted slide state.
-
-## 4. Product rail wheel workflow
-
-```mermaid
-flowchart TD
-    A[Wheel event on product rail] --> B{Event exists and vertical delta dominates?}
-    B -- No --> C[Allow native behaviour]
-    B -- Yes --> D[Calculate maximum horizontal scroll]
-    D --> E[Calculate clamped next scroll position]
-    E --> F{Position would change?}
-    F -- No --> C
-    F -- Yes --> G[Prevent default vertical wheel action]
-    G --> H[Set rail scrollLeft]
-```
-
-At the left or right boundary, the handler allows the page itself to continue scrolling. Native horizontal trackpad input is not intercepted when its horizontal delta is greater than or equal to its vertical delta.
-
-## 5. User journey map
+## 5. Visitor browsing journey
 
 ```mermaid
 flowchart LR
-    A[Open storefront] --> B[View navigation and hero]
-    B --> C[Move hero backward or forward]
-    B --> D[Browse category cards]
-    D --> E[Browse product rail]
-    E --> F[Scroll rail horizontally]
-    F --> G[Continue down the page]
+    A[Open static storefront] --> B[Review navigation and promotion]
+    B --> C[Change hero slide]
+    B --> D[View category cards]
+    D --> E[Browse product collection]
+    E --> F[Scroll product rail]
+    F --> G[Continue through page sections]
 ```
 
-This journey describes the visible prototype only. The current category cards and product links are placeholders and do not complete a shopping journey.
+This is a visual browsing journey only. Category and product anchors are placeholders and do not complete a purchase journey.
 
-## 6. Error and edge-case handling
+## 6. Error and edge-case matrix
 
-| Condition | Current handling |
-|---|---|
-| No hero slides | Skip slide initialization |
-| Missing previous/next control | Skip binding for that control |
-| Event without `preventDefault` | Continue without calling it |
-| Vertical wheel movement does not change rail position | Leave page scrolling available |
-| Native horizontal wheel movement | Do not intercept |
-| Multiple product rails | Bind a separate handler to each rail |
-| Missing local image asset | Browser displays an unresolved image; checker reports it |
+| Condition | Handling | User-visible implication |
+|---|---|---|
+| Empty carousel | Skip slide update | No hero image can be selected |
+| Missing control | Skip event binding | That direction cannot be activated |
+| Missing local asset | Browser resource failure | Broken image slot |
+| External resource unavailable | Browser request fails | Icon, font, logo, or hero image may be absent |
+| Rail has no overflow | Candidate offset cannot advance | Page scrolling remains available |
+| Wheel movement is horizontal | Handler returns | Native horizontal behaviour remains available |
+| Script path fails | No interactions bind | Page remains static |
 
-## 7. Workflow boundaries
+## 7. Workflows that do not exist
 
-The application does not contain a login flow, checkout flow, search flow, cart flow, payment flow, order lifecycle, or database write flow. Any later implementation of these areas requires a separate product and security design.
+There is no current login, registration, search-results, cart-update, checkout, payment, order, refund, or inventory workflow. Those require a separate feature specification and must not be represented as implemented in this project.
+
+## 8. Test mapping
+
+The current automated tests exercise initial carousel state, next/previous movement, wrap-around, wheel translation, horizontal input passthrough, rail boundary behaviour, missing controls, and multiple rail instances. See [Testing Strategy](testing-strategy.md) for coverage limits and manual test requirements.
