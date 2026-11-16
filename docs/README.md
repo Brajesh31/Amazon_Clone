@@ -60,6 +60,7 @@ Run from the repository root:
 node --check amazone.js
 node --test tests/*.test.js
 python scripts/check_html.py
+python scripts/check_docs.py
 ```
 
 These commands validate JavaScript syntax, the mock-DOM interaction tests, and selected HTML/local-reference rules. They do not replace real browser, responsive, network, or accessibility testing.
