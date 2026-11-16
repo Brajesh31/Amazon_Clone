@@ -13,7 +13,8 @@ It does not claim end-to-end coverage of an e-commerce system. The repository ha
 | Required source files | CI file checks | HTML, CSS, and JS entry files exist |
 | JavaScript syntax | `node --check amazone.js` | No syntax errors |
 | JavaScript behaviour | `node --test tests/*.test.js` | All test cases pass |
-| HTML/reference validation | `python scripts/check_html.py` | Required structure is valid; missing assets are reported |
+| HTML/reference validation | `python scripts/check_html.py
+python scripts/check_docs.py` | Required structure is valid; missing assets are reported |
 | Browser smoke test | Manual HTTP preview | Page and interactions render without unexpected console errors |
 | Responsive review | Browser viewport testing | Content remains readable and controls usable |
 | Accessibility review | Keyboard and assistive technology | Meaningful names, order, focus, and alternatives |
@@ -51,6 +52,7 @@ From the repository root:
 node --check amazone.js
 node --test tests/*.test.js
 python scripts/check_html.py
+python scripts/check_docs.py
 ```
 
 Use Node.js 20 or newer for the documented test environment and Python 3 for the HTML checker.
