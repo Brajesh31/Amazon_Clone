@@ -52,6 +52,7 @@ Amazon_Clone/
 │   ├── troubleshooting.md
 │   └── workflow.md
 ├── scripts/
+│   ├── check_docs.py
 │   └── check_html.py
 ├── tests/
 │   └── amazone.test.js
@@ -106,7 +107,7 @@ Contains architecture decisions and their context, consequences, and reconsidera
 
 ### `scripts/`
 
-Contains the Python HTML checker. It is a development tool and not a deployed application dependency.
+Contains two Python standard-library validation utilities. `check_html.py` checks document structure and local resource references; `check_docs.py` checks Markdown file presence and local relative links. Neither script is part of the browser runtime.
 
 ### `tests/`
 
