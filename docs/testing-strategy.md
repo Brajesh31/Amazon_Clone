@@ -35,6 +35,10 @@ Testing should protect the behaviour that actually exists, catch regressions ear
 - Native horizontal wheel movement is not intercepted.
 - Page scrolling is not trapped when a rail reaches a boundary.
 - Multiple rails receive independent handlers.
+- Scroll movement is clamped at both the start and end of a rail.
+- Equal horizontal and vertical wheel deltas are left to the browser.
+- The wheel listener is non-passive so it can cancel default scrolling when necessary.
+- Synthetic events without `preventDefault` do not crash the handler.
 
 ## 4. Run checks locally
 
