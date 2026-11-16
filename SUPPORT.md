@@ -27,6 +27,7 @@ Open `http://localhost:8000/` and reproduce the issue. For automated validation,
 node --check amazone.js
 node --test tests/*.test.js
 python scripts/check_html.py
+python scripts/check_docs.py
 ```
 
 The project does not require npm installation, an API server, a database, or environment secrets.
