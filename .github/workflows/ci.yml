@@ -1,4 +1,4 @@
-name: Static site checks
+name: Static site quality checks
 
 on:
   push:
@@ -11,11 +11,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: static-site-${{ github.workflow }}-${{ github.ref }}
+  group: static-site-quality-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   validate:
+    name: Validate source and behaviour
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -32,17 +33,22 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Verify required entry files
+      - name: Verify required browser entry files
+        shell: bash
         run: |
-          test -f index.html
-          test -f amazone.css
-          test -f amazone.js
+          set -euo pipefail
+          test -s index.html
+          test -s amazone.css
+          test -s amazone.js
 
       - name: Validate JavaScript syntax
         run: node --check amazone.js
 
-      - name: Run JavaScript tests
+      - name: Run dependency-free JavaScript tests
         run: node --test tests/*.test.js
 
-      - name: Validate HTML structure and local asset references
+      - name: Validate HTML structure and local references
         run: python scripts/check_html.py
+
+      - name: Validate local Markdown links and documentation structure
+        run: python scripts/check_docs.py
