@@ -1,4 +1,4 @@
-name: Documentation checks
+name: Documentation quality checks
 
 on:
   push:
@@ -6,34 +6,44 @@ on:
     paths:
       - "README.md"
       - "docs/**"
+      - "scripts/check_docs.py"
       - ".github/workflows/docs-check.yml"
   pull_request:
     branches: [main]
     paths:
       - "README.md"
       - "docs/**"
+      - "scripts/check_docs.py"
       - ".github/workflows/docs-check.yml"
   workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: documentation-quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  markdown-basics:
-    name: Check documentation structure
+  markdown:
+    name: Validate Markdown documentation
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Verify Markdown files are non-empty
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate Markdown files and local links
+        run: python scripts/check_docs.py
+
+      - name: Confirm documentation entry point
         shell: bash
         run: |
           set -euo pipefail
-          find . -path "./.git" -prune -o -type f -name "*.md" -print0 |
-            while IFS= read -r -d '' file; do
-              test -s "$file" || { echo "Empty Markdown file: $file"; exit 1; }
-            done
-      - name: Verify documentation hub exists
-        run: test -s docs/README.md
-      - name: Verify README has documentation entry point
-        run: grep -Fq "docs/README.md" README.md
+          test -s docs/README.md
+          grep -Fq "docs/README.md" README.md
