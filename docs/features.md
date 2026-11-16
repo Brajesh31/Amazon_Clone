@@ -66,7 +66,7 @@ The presence of breakpoints does not prove the layout is usable at every viewpor
 | Account | Sign-in and account labels | No authentication or account management |
 | Orders | Static label | No order history |
 | Cart | Icon and label | No item state, quantity, persistence, or checkout |
-| Category cards | Image, heading, placeholder link | No category route or filtering |
+| Category cards | Image, heading, non-interactive 'Shop more' label | No category route or filtering |
 | Product rails | Product images | No detail view or purchase action |
 | Deal cards | Static prices and discounts | No live pricing, offer validation, or stock status |
 
