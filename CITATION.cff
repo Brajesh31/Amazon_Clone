@@ -2,6 +2,10 @@ cff-version: 1.2.0
 title: "Amazon Clone"
 message: "If you use this project, please cite the repository and its author."
 type: software
+abstract: >-
+  An educational static storefront prototype demonstrating marketplace-style
+  page structure, responsive CSS layout, and browser-native JavaScript
+  interactions. The project does not implement production commerce services.
 authors:
   - family-names: Kumar
     given-names: Brajesh
@@ -12,5 +16,9 @@ keywords:
   - html
   - css
   - javascript
+  - vanilla-javascript
   - frontend
+  - responsive-design
+  - accessibility
+  - static-site
   - ecommerce-prototype
