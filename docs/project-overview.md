@@ -1,86 +1,92 @@
 # 🛍️ Project Overview
 
-## 1. Purpose
+## 1. Project identity
 
-Amazon Clone is an **Amazon-inspired static storefront prototype**. It recreates selected visual patterns of an online marketplace using a single HTML page, a stylesheet, and browser-native JavaScript.
+**Amazon Clone** is an independent, Amazon-inspired static storefront prototype. It uses a single HTML document, a CSS stylesheet, and browser-native JavaScript to demonstrate selected marketplace interface patterns.
 
-The project is useful for studying:
-
-- Structuring a multi-section storefront with semantic HTML.
-- Building responsive layouts with CSS Flexbox and media queries.
-- Implementing a lightweight image carousel without a framework.
-- Creating horizontally scrollable product rails.
-- Validating browser behaviour with Node.js's built-in test runner.
-
-This is a learning and interface demonstration project, not a production commerce application.
+It is an educational frontend project. It is not affiliated with, sponsored by, or endorsed by Amazon, and it is not a functioning online store.
 
 ## 2. Problem statement
 
-A developer learning frontend fundamentals needs a concrete interface that combines navigation, promotional content, category groupings, product imagery, responsive layout, and small interactions. The prototype brings these patterns together without requiring a package manager, application framework, build system, API, or database.
+Frontend learners often need to practise several related interface skills in one coherent example: navigation, promotional content, category cards, product collections, responsive layout, and small interactive behaviours. A static storefront provides a practical setting for those skills without requiring an API, database, build pipeline, or framework.
 
-## 3. Proposed solution
+The challenge is to keep the example clear and testable while avoiding the false impression that a visually complete marketplace layout implements the business systems behind real commerce.
 
-The page is assembled from three core browser resources:
+## 3. Project objectives
+
+- Demonstrate a structured marketplace-style page using HTML5.
+- Use CSS for layout, typography, visual hierarchy, and responsive breakpoints.
+- Implement a small hero carousel with browser-native JavaScript.
+- Support horizontal product browsing with native overflow and wheel interaction.
+- Keep the runtime dependency-light.
+- Provide tests and validation scripts for the implemented behaviour.
+- Document missing resources and unimplemented controls accurately.
+
+## 4. Proposed solution and file roles
 
 | Resource | Role |
 |---|---|
-| `index.html` | Defines page content, navigation, carousel controls, category cards, product rails, and footer |
-| `amazone.css` | Defines presentation, layout, typography, colours, and responsive breakpoints |
-| `amazone.js` | Controls hero slide visibility and converts vertical wheel movement into horizontal product-rail scrolling |
+| `index.html` | Navigation, hero area, category cards, product rails, deal cards, and footer |
+| `amazone.css` | Global styling, layout, card presentation, rail overflow, and responsive rules |
+| `amazone.js` | Carousel slide selection and vertical-wheel-to-horizontal-rail behaviour |
+| `tests/amazone.test.js` | Mock-DOM tests for the JavaScript interactions |
+| `scripts/check_html.py` | Basic HTML structure and local-reference validation |
+| `.github/workflows/ci.yml` | Automated syntax, test, and HTML validation |
 
-The supporting test and validation scripts provide repeatable checks without adding runtime dependencies.
+## 5. Implemented capabilities
 
-## 4. Current capabilities
-
-- Two-level marketplace-style navigation presentation.
+- Marketplace-style top navigation and secondary navigation presentation.
 - Five-image hero carousel with previous and next controls.
 - Static category and promotional cards.
-- Horizontal product collections.
-- Wheel-to-horizontal scrolling on product rails.
-- Responsive layout adjustments for narrower viewports.
-- Automated tests for carousel and rail interaction behaviour.
-- HTML/local-reference validation.
+- Horizontally scrollable product collections.
+- Vertical wheel translation for product rails when movement is possible.
+- Responsive CSS adjustments at 900px, 600px, and 380px.
+- Dependency-free JavaScript behaviour tests.
+- Basic HTML and local-reference checker.
 
-## 5. Explicit non-goals
+## 6. Explicit non-goals
 
 The current implementation does not provide:
-
 - Product search or filtering.
-- Account registration, sign-in, or sessions.
-- A functional cart or wishlist.
+- User registration, sign-in, or sessions.
+- Functional cart or wishlist state.
 - Product detail pages or working product links.
-- Checkout, payment processing, tax, shipping, or refunds.
+- Checkout, payments, tax, shipping, or refunds.
 - Inventory, order management, or customer service workflows.
 - Application APIs, database persistence, or server-side validation.
 
-Do not describe the prototype as a complete e-commerce platform.
+The presence of a search field or cart icon is not evidence that the corresponding system exists.
 
-## 6. Technology profile
+## 7. Technology profile
 
-| Layer | Technology | Use |
+| Layer | Technology | Purpose |
 |---|---|---|
-| Content | HTML5 | Page structure and controls |
-| Presentation | CSS3 | Responsive visual layout |
+| Content | HTML5 | Page structure |
+| Presentation | CSS3 | Layout and responsive styling |
 | Interaction | Vanilla JavaScript | Carousel and product rails |
-| Tests | Node.js built-in test runner | Behaviour regression tests |
-| HTML validation | Python standard library | Local markup and asset-reference checks |
-| Static serving | Python HTTP server or equivalent | Local preview |
+| Tests | Node.js built-in test runner | Behaviour regression checks |
+| HTML validation | Python standard library | Structure and path checks |
+| Preview | Python HTTP server or equivalent | Local static serving |
 
-There is no package manifest or framework runtime.
+There is no package manifest, frontend framework, bundler, or runtime backend.
 
-## 7. Repository health observations
+## 8. Repository health and known issues
 
-The repository includes automated tests, CI, contribution guidance, security guidance, accessibility notes, an asset inventory, and release documentation.
+The repository includes tests, CI, contribution and security guidance, issue templates, accessibility notes, and technical documentation.
 
-A material presentation issue remains: `index.html` references image paths under `imgs/`, but the tracked repository tree does not contain that directory. A clean checkout therefore cannot display those local image resources. See [Asset Inventory](ASSET-INVENTORY.md).
+A material visual issue remains: `index.html` references 31 unique local image paths under `imgs/`, but the tracked repository does not contain that directory. Those local image requests cannot resolve in a clean checkout. Remote hero, logo, icon, and font resources also depend on third-party hosts.
 
-## 8. Intended audience
+## 9. Intended audience
 
-- Frontend learners.
+- Students and frontend learners.
 - Contributors practising HTML, CSS, and vanilla JavaScript.
-- Reviewers assessing browser-side UI patterns.
-- Developers studying lightweight static prototypes.
+- Reviewers assessing a small browser-only project.
+- Developers studying lightweight static prototypes and testable DOM behaviour.
 
-## 9. Product identity and trademark note
+## 10. Success criteria
 
-The project is an independent educational interface inspired by a familiar marketplace layout. It is not affiliated with, sponsored by, or endorsed by Amazon. Third-party brand assets and retailer imagery should be used only where the contributor has appropriate rights.
+The project is successful as a learning prototype when its documented interactions work, the page is understandable and responsive, its assets have clear rights, its controls are not misleading, and its tests provide useful regression coverage. It does not need a backend to meet that educational goal.
+
+## 11. Identity and asset rights
+
+The project is independent. Any third-party logo, retailer image, font, or icon must be reviewed under its own licence or permission terms. The repository's software licence does not automatically grant rights to external brand assets.
