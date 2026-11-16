@@ -1,37 +1,67 @@
 name: 📚 Documentation improvement
-description: Report unclear, missing, or incorrect project documentation.
+description: Report unclear, missing, outdated, or incorrect project documentation.
 title: "[Docs]: "
-labels: ["documentation"]
+labels:
+  - documentation
 body:
   - type: markdown
     attributes:
-      value: "Use this form for documentation changes. Do not report security vulnerabilities here."
+      value: |
+        Use this form for project documentation only. For a code defect, use the bug report form.
+        Do not report security vulnerabilities here or include secrets and personal information.
   - type: textarea
     id: location
     attributes:
       label: Documentation location
-      description: Link or path to the affected document.
-      placeholder: docs/architecture.md
+      description: Provide the file path, heading, or GitHub URL.
+      placeholder: docs/architecture.md, section 3
+    validations:
+      required: true
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: Type of documentation issue
+      options:
+        - Missing explanation
+        - Incorrect technical statement
+        - Outdated project structure or command
+        - Broken local link
+        - Missing diagram or workflow
+        - Accessibility or security guidance gap
+        - Asset or licence information gap
+        - Typo or formatting problem
+        - Other
     validations:
       required: true
   - type: textarea
     id: issue
     attributes:
-      label: What is unclear or missing?
-      description: Explain the gap with enough context to reproduce it.
+      label: What is unclear, missing, or incorrect?
+      description: Explain the problem and why it matters to a reader or contributor.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Supporting implementation or evidence
+      description: Link to the source file, test, command output, or observed behaviour that supports the correction.
     validations:
       required: true
   - type: textarea
     id: proposal
     attributes:
       label: Suggested improvement
-      description: Describe the correction or additional explanation.
+      description: Describe the correction or additional explanation. A proposed rewrite is optional.
     validations:
       required: false
-  - type: textarea
-    id: evidence
+  - type: checkboxes
+    id: checks
     attributes:
-      label: Supporting source or evidence
-      description: Point to the implementation or behaviour that supports the requested documentation.
-    validations:
-      required: false
+      label: Submission checks
+      options:
+        - label: I checked whether the issue already exists.
+          required: true
+        - label: I based the report on the current repository behaviour.
+          required: true
+        - label: I removed credentials and personal information from evidence.
+          required: true
