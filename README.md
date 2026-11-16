@@ -1,64 +1,164 @@
-# Amazon Clone
+# 🛒 Amazon Clone
 
-An **Amazon-inspired static storefront prototype** built with HTML, CSS, and vanilla JavaScript. It demonstrates a marketplace-style navigation layout, promotional hero carousel, category cards, product rails, and deal cards.
+[![CI](https://github.com/Brajesh31/Amazon_Clone/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Brajesh31/Amazon_Clone/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![HTML5](https://img.shields.io/badge/HTML5-structure-e34f26?logo=html5&logoColor=white)](https://developer.mozilla.org/docs/Web/HTML)
+[![CSS3](https://img.shields.io/badge/CSS3-styling-1572b6?logo=css3&logoColor=white)](https://developer.mozilla.org/docs/Web/CSS)
+[![JavaScript](https://img.shields.io/badge/JavaScript-vanilla-f7df1e?logo=javascript&logoColor=111)](https://developer.mozilla.org/docs/Web/JavaScript)
 
-This repository is a frontend learning project. It is not affiliated with or endorsed by Amazon. It is **not a functioning online store**: search, account, cart, product links, checkout, payment processing, and order management are not implemented.
+An **Amazon-inspired static storefront prototype** built with HTML, CSS, and vanilla JavaScript. The page demonstrates marketplace-style navigation, a promotional hero carousel, category cards, horizontally scrollable product sections, and deal cards.
 
-## Features
+> [!IMPORTANT]
+> This is an educational frontend prototype, not a functioning online store. It is not affiliated with or endorsed by Amazon. Search, accounts, cart operations, product detail pages, checkout, payment processing, inventory, and order management are not implemented.
 
-- Two-level marketplace-style navigation layout.
-- Hero image carousel with previous and next controls.
-- Static category cards and product sections.
-- Horizontal product rails with vertical-wheel support.
-- Responsive CSS presentation.
-- Dependency-free JavaScript tests for carousel and product-rail behaviour.
+## 📑 Contents
 
-## Technology
+- [✨ Overview](#-overview)
+- [🎯 Objectives](#-objectives)
+- [🧩 Features](#-features)
+- [🛠️ Technology](#️-technology)
+- [🏗️ Architecture](#️-architecture)
+- [🗂️ Project structure](#️-project-structure)
+- [🚀 Run locally](#-run-locally)
+- [🧪 Automated checks](#-automated-checks)
+- [🧭 User workflow](#-user-workflow)
+- [🖼️ Assets and screenshots](#️-assets-and-screenshots)
+- [⚠️ Current limitations](#️-current-limitations)
+- [🔐 Security and accessibility](#-security-and-accessibility)
+- [🤝 Contributing](#-contributing)
+- [📚 Documentation](#-documentation)
+- [🗺️ Roadmap](#️-roadmap)
+- [📄 License](#-license)
+
+## ✨ Overview
+
+The project brings several common storefront interface patterns into one small browser application. It is intentionally dependency-light: no package installation, bundler, frontend framework, or backend is required.
+
+The source is split into three browser-facing files:
+
+| File | Responsibility |
+|---|---|
+| `index.html` | Page structure, static content, category cards, product cards, and carousel controls |
+| `amazone.css` | Layout, styling, responsive breakpoints, and product rail presentation |
+| `amazone.js` | Hero slide selection and wheel-assisted product rail scrolling |
+
+## 🎯 Objectives
+
+- Practise semantic page structure with HTML5.
+- Build a responsive storefront layout with CSS.
+- Implement small interactions using browser-native JavaScript.
+- Understand horizontal overflow and wheel-event handling.
+- Keep behaviour testable without third-party runtime dependencies.
+
+## 🧩 Features
+
+| Feature | Implementation status | Notes |
+|---|---|---|
+| Two-level navigation presentation | Static UI | Navigation destinations are not fully implemented |
+| Hero image carousel | Implemented | Previous/next controls and wrap-around |
+| Category cards | Static UI | Placeholder links |
+| Product rails | Implemented | Native horizontal scrolling |
+| Vertical-wheel rail support | Implemented | Keeps page scrolling available at rail boundaries |
+| Responsive layout | Implemented in CSS | Manual viewport review remains important |
+| Search | Not implemented | Visual input only |
+| Account and orders | Not implemented | Static labels |
+| Cart and checkout | Not implemented | No cart state or transaction flow |
+
+## 🛠️ Technology
 
 | Area | Technology |
-| --- | --- |
+|---|---|
 | Markup | HTML5 |
 | Styling | CSS3 |
-| Browser behaviour | Vanilla JavaScript |
-| Tests | Node.js built-in test runner |
+| Browser interaction | Vanilla JavaScript |
+| Behaviour tests | Node.js built-in test runner |
 | HTML validation | Python standard library |
-| External resources | Third-party image, font, and icon URLs |
+| Local preview | Python static HTTP server |
+| External visual resources | Third-party image, font, and icon URLs |
 
-No npm package installation, bundler, frontend framework, or backend is required.
+No npm dependencies are required by the current implementation.
 
-## Project structure
+## 🏗️ Architecture
+
+```mermaid
+flowchart TD
+    Visitor[Visitor browser] --> HTML[index.html]
+    HTML --> CSS[amazone.css]
+    HTML --> JS[amazone.js]
+    HTML --> Remote[External image, font and icon resources]
+    HTML --> Local[Relative imgs/ references]
+    JS --> Carousel[Hero carousel]
+    JS --> Rails[Product rail scrolling]
+    Tests[Node.js tests] -. validate .-> JS
+    Checker[Python HTML checker] -. inspect .-> HTML
+    Local -. missing in tracked tree .-> Broken[Unresolved local image slots]
+```
+
+The browser loads a static document, stylesheet, JavaScript file, and referenced visual resources. There is no application server, API, database, or persistent data layer.
+
+## 🗂️ Project structure
 
 ```text
-.
+Amazon_Clone/
+├── .github/
+│   ├── ISSUE_TEMPLATE/
+│   ├── workflows/
+│   ├── PULL_REQUEST_TEMPLATE.md
+│   └── dependabot.yml
+├── docs/
+│   ├── adr/
+│   ├── README.md
+│   ├── ACCESSIBILITY.md
+│   ├── ASSET-INVENTORY.md
+│   ├── QA.md
+│   ├── SECURITY-REVIEW.md
+│   ├── architecture.md
+│   ├── data-flow.md
+│   ├── features.md
+│   ├── project-overview.md
+│   ├── project-structure.md
+│   ├── workflow.md
+│   └── ...
+├── scripts/
+│   └── check_html.py
+├── tests/
+│   └── amazone.test.js
 ├── index.html
 ├── amazone.css
 ├── amazone.js
-├── tests/
-│   └── amazone.test.js
-├── scripts/
-│   └── check_html.py
-├── docs/
-│   ├── ACCESSIBILITY.md
-│   ├── ASSET-INVENTORY.md
-│   ├── SECURITY-REVIEW.md
-│   └── ...
-└── .github/
-    └── workflows/
+├── README.md
+├── CONTRIBUTING.md
+├── SECURITY.md
+├── ROADMAP.md
+└── LICENSE
 ```
 
-## Run locally
+See [Project Structure](docs/project-structure.md) for the file-by-file explanation and complete tree.
 
-Use Python 3 from the repository root:
+## 🚀 Run locally
+
+### Prerequisites
+
+- Python 3 for the local static server.
+- A modern browser with JavaScript enabled.
+- Node.js 20 or newer for the test commands.
+- Git, if cloning the project.
+
+### Clone and start
 
 ```bash
+git clone https://github.com/Brajesh31/Amazon_Clone.git
+cd Amazon_Clone
 python -m http.server 8000
 ```
 
 Open <http://localhost:8000/>.
 
-## Run automated checks
+Run the server from the repository root so relative paths resolve correctly. Opening the file directly through a `file://` URL is not a substitute for the HTTP preview.
 
-Node.js 20 or newer and Python 3 are required for the test commands:
+## 🧪 Automated checks
+
+Run all checks from the project root:
 
 ```bash
 node --check amazone.js
@@ -66,39 +166,101 @@ node --test tests/*.test.js
 python scripts/check_html.py
 ```
 
-The HTML checker reports absent local image paths as warnings. The current Git repository does not contain the referenced `imgs/` directory, so category and product image slots remain broken in a clean checkout.
+The Node.js tests cover carousel and product-rail behaviour. The Python checker validates the HTML and local references. The checker reports missing local images as warnings; that does not mean the assets have been repaired.
 
-## Known limitations
+## 🧭 User workflow
 
-- The HTML contains 47 references across 31 unique local image paths under `imgs/`, but those files are not tracked.
-- The hero carousel uses remote images that can disappear or change.
-- Search, account, cart, categories, and product actions are visual placeholders.
-- Product content and promotional values are hard-coded in HTML.
-- There is no API, database, authentication, server-side validation, or persistence.
-- This is not an e-commerce, checkout, or payment implementation.
-- Third-party logos, imagery, fonts, and icons require separate usage-rights review.
+```mermaid
+flowchart LR
+    A[Open storefront] --> B[View hero and navigation]
+    B --> C[Move carousel]
+    B --> D[Browse category cards]
+    D --> E[Browse product rail]
+    E --> F[Scroll products horizontally]
+    F --> G[Continue through page]
+```
 
-See the [asset inventory](docs/ASSET-INVENTORY.md), [architecture](docs/architecture.md), [API status](docs/api.md), [database status](docs/database.md), [accessibility notes](docs/ACCESSIBILITY.md), and [security review](docs/SECURITY-REVIEW.md).
+This describes browsing the prototype only. The placeholder category/product links do not complete a shopping journey.
 
-## Documentation
+## 🖼️ Assets and screenshots
 
+The current HTML contains 47 references across 31 unique local image paths under `imgs/`, but the tracked repository does not contain that directory. Category and product image slots are therefore unresolved in a clean checkout.
+
+The hero and several interface resources are loaded from external hosts and may change or become unavailable. Do not add retailer imagery without checking usage rights.
+
+No fabricated screenshots are included. Once approved assets are restored, capture current browser screenshots and place them in a dedicated screenshots directory, then update the asset inventory.
+
+See [Asset Inventory](docs/ASSET-INVENTORY.md).
+
+## ⚠️ Current limitations
+
+- The project is a visual prototype, not an e-commerce platform.
+- Search, account, cart, orders, product pages, checkout, and payments are not implemented.
+- Product and promotion content is hard-coded in HTML.
+- There is no API, database, authentication, inventory, or persistence.
+- Local product/category imagery is missing from the tracked repository.
+- Third-party resource uptime and usage rights are outside this repository's control.
+
+See [Limitations](docs/limitations.md) and [Future Scope](docs/future-scope.md).
+
+## 🔐 Security and accessibility
+
+The current page does not process credentials, payments, or personal account records. Security review should still consider external resources, safe future DOM updates, and the risk of misrepresenting placeholder UI as real commerce functionality.
+
+Review:
+- [Security policy](SECURITY.md)
+- [Security review](docs/SECURITY-REVIEW.md)
+- [Accessibility notes](docs/ACCESSIBILITY.md)
+
+## 🤝 Contributing
+
+Contributions should be focused, tested, and documented. Preserve the project's static scope unless a feature requirement justifies a larger architectural change.
+
+1. Read [CONTRIBUTING.md](CONTRIBUTING.md).
+2. Reproduce the issue or define expected behaviour.
+3. Make a focused change.
+4. Run all automated checks.
+5. Test in a browser at narrow and wide viewports.
+6. Update relevant documentation.
+
+Use the repository issue templates for bug reports and feature proposals.
+
+## 📚 Documentation
+
+Start with the [Documentation Hub](docs/README.md). Main technical guides include:
+
+- [Project overview](docs/project-overview.md)
+- [Architecture](docs/architecture.md)
+- [System design](docs/system-design.md)
+- [Project structure](docs/project-structure.md)
+- [Workflow diagrams](docs/workflow.md)
+- [Features](docs/features.md)
+- [Data flow](docs/data-flow.md)
 - [Installation](docs/installation.md)
 - [Development](docs/development.md)
-- [Architecture](docs/architecture.md)
-- [Asset inventory](docs/ASSET-INVENTORY.md)
-- [Accessibility](docs/ACCESSIBILITY.md)
-- [API and integrations](docs/api.md)
-- [Database](docs/database.md)
+- [Testing strategy](docs/testing-strategy.md)
+- [QA checklist](docs/QA.md)
 - [Deployment](docs/deployment.md)
-- [Testing and QA](docs/QA.md)
+- [Maintenance](docs/maintenance.md)
+- [API status](docs/api.md)
+- [Database status](docs/database.md)
+- [Accessibility](docs/ACCESSIBILITY.md)
+- [Security review](docs/SECURITY-REVIEW.md)
 - [Troubleshooting](docs/troubleshooting.md)
 - [FAQ](docs/faq.md)
+- [Glossary](docs/glossary.md)
+- [Limitations](docs/limitations.md)
+- [Future scope](docs/future-scope.md)
+- [Architecture Decision Record](docs/adr/0001-static-frontend-prototype.md)
 
-## Contributing and security
+## 🗺️ Roadmap
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Report concerns privately according to [SECURITY.md](SECURITY.md).
+See [ROADMAP.md](ROADMAP.md) for project-level planning. Future scope is proposal-only and does not represent completed functionality.
 
-## License
+## 📄 License
 
-MIT. See [LICENSE](LICENSE).
-Last updated: 2026-11-16 03:47 UTC
+This project is distributed under the MIT License. See [LICENSE](LICENSE).
+
+---
+
+**Educational project.** Independent marketplace-style interface prototype, not affiliated with Amazon.
