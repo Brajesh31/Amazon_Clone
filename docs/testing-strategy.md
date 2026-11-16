@@ -42,6 +42,7 @@ Testing should protect the behaviour that actually exists, catch regressions ear
 node --check amazone.js
 node --test tests/*.test.js
 python scripts/check_html.py
+python scripts/check_docs.py
 ```
 
 No package installation is required. Use Node.js 20 or newer and Python 3.
