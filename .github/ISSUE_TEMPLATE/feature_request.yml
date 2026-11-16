@@ -1,22 +1,80 @@
-name: Feature request
-description: Suggest an improvement to the static storefront prototype.
+name: 💡 Feature request
+description: Propose a useful, testable improvement to the static storefront.
 title: "[Feature]: "
-labels: ["enhancement"]
+labels:
+  - enhancement
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the user problem before proposing a solution.
+        This repository is currently a static frontend prototype. Account, cart, search, checkout, and payment features are not implemented.
   - type: textarea
     id: problem
     attributes:
       label: User problem
+      description: Who experiences the problem, and what are they unable to do?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Explain what a successful experience should look like.
     validations:
       required: true
   - type: textarea
     id: proposal
     attributes:
       label: Proposed solution
+      description: Describe the implementation idea, while allowing alternatives.
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Expected implementation scope
+      options:
+        - HTML/CSS presentation only
+        - Browser-side JavaScript interaction
+        - Accessibility or responsive improvement
+        - Testing or developer tooling
+        - Documentation
+        - Requires a separate backend/product design
+        - Not sure
     validations:
       required: true
   - type: textarea
-    id: scope
+    id: acceptance
     attributes:
-      label: Scope and limitations
-      description: Explain whether this remains frontend-only or requires a backend.
+      label: Acceptance criteria
+      description: List observable outcomes that can be reviewed and tested.
+      placeholder: |
+        - [ ] The control has a meaningful accessible name.
+        - [ ] Keyboard activation works.
+        - [ ] Tests cover normal and boundary cases.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives and trade-offs
+      description: Mention simpler approaches, dependencies, and maintenance costs.
+    validations:
+      required: false
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Supporting examples
+      description: Add screenshots, diagrams, or references where useful.
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Proposal checks
+      options:
+        - label: I have searched for an existing request.
+          required: true
+        - label: I understand that this proposal is not a delivery commitment.
+          required: true
