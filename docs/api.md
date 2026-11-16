@@ -14,7 +14,7 @@ This is an explicit architectural boundary, not an undocumented missing package.
 | Account and lists | Displays static labels | None |
 | Orders | Displays static label | None |
 | Cart | Displays icon and static link | None |
-| Product/category links | Placeholder anchors | None |
+| Product/category links | Non-interactive labels | None |
 | Hero carousel | Changes local slide visibility | None |
 | Product rails | Changes browser element scroll position | None |
 | Fonts/icons/images | Browser requests remote static resources | Static resource requests only |
