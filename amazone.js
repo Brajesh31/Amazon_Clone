@@ -11,7 +11,7 @@
  */
 (() => {
     const slides = Array.from(
-        document.querySelectorAll(".header-slider ul img")
+        document.querySelectorAll(".header-slider .header-slides img")
     );
     const previousButton = document.querySelector(".control_prev");
     const nextButton = document.querySelector(".control_next");
