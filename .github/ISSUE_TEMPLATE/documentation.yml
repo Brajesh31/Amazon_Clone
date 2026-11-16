@@ -1,0 +1,37 @@
+name: 📚 Documentation improvement
+description: Report unclear, missing, or incorrect project documentation.
+title: "[Docs]: "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: "Use this form for documentation changes. Do not report security vulnerabilities here."
+  - type: textarea
+    id: location
+    attributes:
+      label: Documentation location
+      description: Link or path to the affected document.
+      placeholder: docs/architecture.md
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What is unclear or missing?
+      description: Explain the gap with enough context to reproduce it.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Suggested improvement
+      description: Describe the correction or additional explanation.
+    validations:
+      required: false
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Supporting source or evidence
+      description: Point to the implementation or behaviour that supports the requested documentation.
+    validations:
+      required: false
