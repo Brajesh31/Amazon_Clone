@@ -28,6 +28,7 @@ Run from the repository root:
 node --check amazone.js
 node --test tests/*.test.js
 python scripts/check_html.py
+python scripts/check_docs.py
 ```
 
 - [ ] JavaScript syntax validation passes.
