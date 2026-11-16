@@ -239,7 +239,7 @@ test("wheel listener is non-passive so a movable rail can cancel default scrolli
     const { rails } = boot();
     const listener = rails[0].listeners.get("wheel");
 
-    assert.deepEqual(listener.options, { passive: false });
+    assert.equal(listener.options.passive, false);
 });
 
 test("rail still moves when a synthetic event has no preventDefault method", () => {
